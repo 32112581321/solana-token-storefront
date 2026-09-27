@@ -77,3 +77,14 @@ test('keeps the shopping flow usable on a phone viewport', async ({ page }) => {
   await expect(page.locator('[data-cart-drawer]')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Continue to devnet payment' })).toBeVisible();
 });
+
+test('presents an adjustable and clearly hypothetical campaign case study', async ({ page }) => {
+  await page.goto('/case-study.html');
+  await expect(page.getByRole('heading', { name: 'Turn a merch drop into a community ritual.' })).toBeVisible();
+  await expect(page.getByText('Hypothetical case study.')).toBeVisible();
+  await expect(page.getByText('No token-price outcome is assumed.')).toBeVisible();
+  await expect(page.locator('[data-result="revenue"]')).toHaveText('$26,813');
+  await page.locator('[data-input="impressions"]').fill('2500000');
+  await expect(page.locator('[data-result="revenue"]')).toHaveText('$55,860');
+  await expect(page.getByText('This is a commercial experiment, not an investment product.')).toBeVisible();
+});

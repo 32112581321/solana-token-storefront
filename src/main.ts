@@ -119,6 +119,7 @@ function renderShell(config: StorefrontConfig, catalog: Catalog): void {
       <nav aria-label="Primary navigation">
         <a href="#catalog">Catalog</a>
         <a href="#checkout">Checkout</a>
+        <a href="./case-study.html">Case study</a>
         <button class="cart-button" type="button" data-open-cart aria-label="Open cart">Cart <span data-cart-count>0</span></button>
       </nav>
     </header>
@@ -130,7 +131,7 @@ function renderShell(config: StorefrontConfig, catalog: Catalog): void {
           <p class="hero-lede">${escapeHtml(config.storefront.description)}</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#catalog">Shop the catalog</a>
-            <button class="button button-secondary" type="button" data-open-cart>Review cart</button>
+            <a class="button button-secondary" href="./case-study.html">Read the campaign case study</a>
           </div>
         </div>
         <aside class="token-card" aria-label="Payment configuration">
@@ -175,7 +176,7 @@ function renderShell(config: StorefrontConfig, catalog: Catalog): void {
     </main>
     <footer>
       <p>${escapeHtml(config.storefront.disclaimer)}</p>
-      <span>Forkable storefront · no hosted service included</span>
+      <span><a href="./case-study.html">Hypothetical campaign case study</a> · Forkable storefront</span>
     </footer>
     <div class="drawer-backdrop" data-drawer-backdrop hidden></div>
     <aside class="cart-drawer" data-cart-drawer aria-labelledby="cart-title" aria-hidden="true">

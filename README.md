@@ -4,6 +4,8 @@ A forkable, statically hosted commerce template that prices real SKUs in a selec
 
 The checked-in starter is the complete Daily Roman Updates reference catalog: eight active products plus three original draft concepts. The commerce engine itself is token-agnostic and configured through public JSON files.
 
+The repository also includes `case-study.html`, an interactive and explicitly hypothetical model for a token-only merchandise campaign with a community-directed share of campaign profit. Its figures are adjustable assumptions, not reported results or financial projections.
+
 > [!IMPORTANT]
 > This repository is an unofficial demonstration. It does not verify payment, create an order, reserve inventory, collect customer information, calculate shipping or tax, or trigger fulfillment. Test-token transfers can still be irreversible. Do not enable it on mainnet without a real order service, server-side settlement verification, replay protection, and merchant review.
 
