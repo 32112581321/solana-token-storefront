@@ -8,6 +8,7 @@ The idea is straightforward. Offer merchandise people want, let them pay with th
 
 | Start here | What you will find |
 | --- | --- |
+| [Download v1.0.0-devnet.1](https://github.com/32112581321/solana-token-storefront/releases/tag/v1.0.0-devnet.1) | Free GitHub-hosted source and prebuilt storefront ZIPs, with checksums |
 | [Community proposal](COMMUNITY_PROPOSAL.md) | The contribution, the case for a trial, proposed profit allocation, and ways token holders can participate |
 | [User manual](USER_MANUAL.md) | Local setup, wallet configuration, inventory, devnet checkout, merchant operations, hosting, and troubleshooting |
 | [Browse the demonstration](https://32112581321.github.io/solana-token-storefront/) | Eight DRU reference products, variants, cart, and a devnet wallet handoff |
@@ -26,7 +27,9 @@ The implementation uses Vite, vanilla TypeScript, HTML, and CSS. The optional se
 
 ## Try it on your computer
 
-Install Git and Node.js 22.12 or newer, then run:
+For a download without Git, get the **source ZIP** from the [release page](https://github.com/32112581321/solana-token-storefront/releases/tag/v1.0.0-devnet.1), extract it, and open a terminal in its folder. Install Node.js 22.12 or newer, then run `npm ci` and `npm run dev`. The source bundle includes the local inventory service, user manual, and community proposal. It does not include installed dependencies.
+
+To clone with Git instead, run:
 
 ```sh
 git clone https://github.com/32112581321/solana-token-storefront.git

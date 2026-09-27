@@ -1,0 +1,116 @@
+name: Publish community preview
+
+on:
+  push:
+    tags:
+      - 'v*-devnet.*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.repository == '32112581321/solana-token-storefront'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22.12.0
+          cache: npm
+      - name: Verify version and release notes
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, accessSync } from 'node:fs';
+          const tag = process.env.RELEASE_TAG;
+          const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
+          const lock = JSON.parse(readFileSync('package-lock.json', 'utf8'));
+          if (!/^v\d+\.\d+\.\d+-devnet\.\d+$/.test(tag)) throw new Error('Invalid preview tag.');
+          if (tag !== `v${pkg.version}` || lock.version !== pkg.version || lock.packages[''].version !== pkg.version) {
+            throw new Error('Tag and package versions must agree.');
+          }
+          accessSync(`releases/${tag}.md`);
+          NODE
+      - run: npm ci
+      - run: npm test
+      - run: npm run test:inventory
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - name: Package source and static website
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          artifact_root="$RUNNER_TEMP/storefront-release"
+          bundle_name="solana-token-storefront-$RELEASE_TAG"
+          mkdir -p "$artifact_root/assets" "$artifact_root/staging/$bundle_name-static/docs/licenses"
+          git archive --format=zip --prefix="$bundle_name/" --output="$artifact_root/assets/$bundle_name-source.zip" HEAD
+          cp -R dist/. "$artifact_root/staging/$bundle_name-static/"
+          cp README.md USER_MANUAL.md COMMUNITY_PROPOSAL.md LICENSE.md NOTICE.md "$artifact_root/staging/$bundle_name-static/docs/"
+          cp "releases/$RELEASE_TAG.md" "$artifact_root/staging/$bundle_name-static/docs/RELEASE_NOTES.md"
+          cp releases/STATIC_README.md "$artifact_root/staging/$bundle_name-static/START_HERE.md"
+          cp node_modules/qrcode/license "$artifact_root/staging/$bundle_name-static/docs/licenses/qrcode.txt"
+          cp node_modules/dijkstrajs/LICENSE.md "$artifact_root/staging/$bundle_name-static/docs/licenses/dijkstrajs.txt"
+          (
+            cd "$artifact_root/staging"
+            zip -qr "$artifact_root/assets/$bundle_name-static.zip" "$bundle_name-static"
+          )
+          (
+            cd "$artifact_root/assets"
+            sha256sum "$bundle_name-source.zip" "$bundle_name-static.zip" > SHA256SUMS.txt
+            sha256sum -c SHA256SUMS.txt
+            unzip -tq "$bundle_name-source.zip"
+            unzip -tq "$bundle_name-static.zip"
+          )
+      - name: Inspect release archive contents
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { execFileSync } from 'node:child_process';
+          const bundle = `solana-token-storefront-${process.env.RELEASE_TAG}`;
+          const root = `${process.env.RUNNER_TEMP}/storefront-release/assets`;
+          for (const kind of ['source', 'static']) {
+            const entries = execFileSync('unzip', ['-Z1', `${root}/${bundle}-${kind}.zip`], { encoding: 'utf8' }).trim().split('\n');
+            const prefix = kind === 'source' ? `${bundle}/` : `${bundle}-static/`;
+            const forbidden = /(^|\/)(\.devnet|\.inventory|\.git|node_modules|\.env)(\/|$)|\.sqlite(?:-(?:wal|shm))?$/;
+            if (entries.some(path => !path.startsWith(prefix) || path.split('/').includes('..') || forbidden.test(path))) {
+              throw new Error(`Unexpected private or unsafe path in ${kind} archive.`);
+            }
+            const expected = kind === 'source'
+              ? ['package.json', 'package-lock.json', 'src/main.ts', 'server/cli.ts', 'USER_MANUAL.md', 'COMMUNITY_PROPOSAL.md', 'LICENSE.md', 'NOTICE.md']
+              : ['index.html', 'catalog.json', 'storefront.config.json', 'START_HERE.md', 'docs/USER_MANUAL.md', 'docs/COMMUNITY_PROPOSAL.md', 'docs/LICENSE.md', 'docs/NOTICE.md'];
+            for (const file of expected) {
+              if (!entries.includes(`${prefix}${file}`)) throw new Error(`Missing ${file} in ${kind} archive.`);
+            }
+            console.log(`Checked ${kind} archive: ${entries.length} entries.`);
+          }
+          NODE
+      - name: Publish GitHub prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          artifact_root="$RUNNER_TEMP/storefront-release/assets"
+          bundle_name="solana-token-storefront-$RELEASE_TAG"
+          gh release create "$RELEASE_TAG" \
+            --verify-tag \
+            --prerelease \
+            --title "$RELEASE_TAG — Community preview" \
+            --notes-file "releases/$RELEASE_TAG.md" \
+            "$artifact_root/$bundle_name-source.zip" \
+            "$artifact_root/$bundle_name-static.zip" \
+            "$artifact_root/SHA256SUMS.txt"

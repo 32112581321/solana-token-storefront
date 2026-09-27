@@ -32,7 +32,41 @@ The page's **View verified test transfer** link opens a historical test record. 
 
 ## Run a local copy
 
-You need Git, Node.js 22.12 or newer, npm, and a browser. Use `node --version` to check Node. Run all commands below from the repository directory unless stated otherwise.
+You need Node.js 22.12 or newer, npm, and a browser. Git is optional if you download a release. Use `node --version` to check Node. Run all commands below from the repository directory unless stated otherwise.
+
+### Download a release
+
+Open [v1.0.0-devnet.1 on GitHub Releases](https://github.com/32112581321/solana-token-storefront/releases/tag/v1.0.0-devnet.1). The downloads are publicly hosted on GitHub.
+
+| Download | Use it for |
+| --- | --- |
+| `solana-token-storefront-v1.0.0-devnet.1-source.zip` | The full editable project, including the storefront, local inventory service, scripts, tests, manual, and proposal |
+| `solana-token-storefront-v1.0.0-devnet.1-static.zip` | An already built storefront for a static web server; includes documentation under `docs/`, but does not run the inventory service |
+| `SHA256SUMS.txt` | Checking that your downloaded ZIPs match the released bytes |
+
+For the source bundle, extract the ZIP and open a terminal inside `solana-token-storefront-v1.0.0-devnet.1`. Run:
+
+```sh
+npm ci
+npm run validate-config
+npm run dev
+```
+
+Follow the rest of this manual to configure your own wallet or start inventory. No local database, signing keys, or installed dependencies are distributed. The ZIP is a source project, not a desktop installer.
+
+For the static bundle, extract it and serve the contents of its `solana-token-storefront-v1.0.0-devnet.1-static` folder. If Python 3 is installed, a local preview from inside that folder is:
+
+```sh
+python3 -m http.server --bind 127.0.0.1 8080
+```
+
+Then open `http://127.0.0.1:8080/`. To host it elsewhere, upload that folder's contents, including `index.html`, `assets/`, `images/`, and the public JSON files. Do not open the HTML directly from the filesystem. Edit the root-level `storefront.config.json` and `catalog.json` for the static bundle; the source bundle uses the `public/` paths throughout this manual.
+
+The release is labeled a **prerelease** because it is a devnet prototype. Its configuration still points to the public demo's test recipient until you change it. The accompanying release notes describe the operational limits.
+
+To check integrity on macOS or Linux, keep both ZIPs and `SHA256SUMS.txt` in one folder and use `shasum -a 256 -c SHA256SUMS.txt` or `sha256sum -c SHA256SUMS.txt`. On Windows, use PowerShell's `Get-FileHash` with `-Algorithm SHA256` and compare the result with the file. Checksums verify the downloaded bytes against the published files; they are not a security audit.
+
+### Clone the source
 
 To try the upstream copy:
 
