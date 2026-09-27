@@ -26,3 +26,7 @@ The artwork under `public/images/concepts/` was generated specifically for this 
 ## Token reference
 
 `14kH2osUyEJnqBZ7yFK4pLKJGuPZU4pr1enhi2ZLEmRw` is retained only as the user-supplied mainnet DRU reference mint and as a blocked value in this devnet-only demonstration. Its presence is not an endorsement, verification, or representation about the token.
+
+## Wallet and dependency notices
+
+Phantom and MetaMask names identify compatible third-party software, not sponsorship or endorsement. Their software and other dependencies retain their own licenses. Vite emits the bundled dependency license texts at `dist/.vite/license.md`; release archives also copy that file to `docs/licenses/bundled-dependencies.md`. The repository's MIT grant does not relicense third-party dependencies.

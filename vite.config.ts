@@ -7,6 +7,7 @@ const rootDirectory = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   base: './',
   build: {
+    license: true,
     rollupOptions: {
       input: {
         storefront: resolve(rootDirectory, 'index.html'),

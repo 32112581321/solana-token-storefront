@@ -48,6 +48,17 @@ describe('public configuration validation', () => {
     changed.payment.recipient = '11111111111111111111111111111111';
     changed.payment.enabled = true;
     expect(validateStorefrontConfig(changed).errors).toContain('payment.token.mint is blocked for this devnet storefront.');
+    changed.payment.blockedMints = [];
+    expect(validateStorefrontConfig(changed).errors).toContain('payment.token.mint is blocked for this devnet storefront.');
+  });
+
+  it('accepts old configurations and validates an optional public RPC URL', () => {
+    for (const rpcUrl of ['https://api.devnet.solana.com', 'http://127.0.0.1:8899']) {
+      expect(validateStorefrontConfig({ ...validConfig, payment: { ...validConfig.payment, rpcUrl } }).errors).toEqual([]);
+    }
+    for (const rpcUrl of ['', 'http://remote.example', 'https://user:password@example.com', 'javascript:alert(1)', 'https://example.com/#secret']) {
+      expect(validateStorefrontConfig({ ...validConfig, payment: { ...validConfig.payment, rpcUrl } }).errors.join()).toContain('payment.rpcUrl');
+    }
   });
 
   it('rejects remote images and shop links', () => {

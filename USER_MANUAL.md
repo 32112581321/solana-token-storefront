@@ -22,7 +22,7 @@ This manual covers the current devnet prototype. You can browse the demonstratio
 
 Open the [public storefront](https://32112581321.github.io/solana-token-storefront/). Choose a product variant, select **Add to cart**, and adjust or remove items in the cart drawer. The three design concepts are drafts and cannot be purchased.
 
-Selecting **Continue to devnet payment** shows an exact token total, a QR code, and **Open wallet**. You can inspect the flow without sending a transaction. The public demo uses static mode: it neither reserves stock nor stores an order.
+Selecting **Continue to devnet payment** shows an exact token total and **Connect Phantom / Connect MetaMask** buttons. Connect, then select **Pay … on devnet** to review the transaction in your wallet. Connecting alone does not send anything. A Solana Pay QR and **Open wallet** link remain under **Alternative** for compatible wallets. The public demo uses static mode: it neither reserves stock nor stores an order.
 
 `TEST DRU` is a disposable token on Solana **devnet**, a development network. Devnet and Solana's separately named testnet are different clusters; use devnet for this project. See the [Solana cluster documentation](https://solana.com/docs/references/clusters).
 
@@ -30,21 +30,43 @@ For an actual test transfer you need a compatible wallet set to devnet, tokens o
 
 The page's **View verified test transfer** link opens a historical test record. It does not confirm payment of your current cart.
 
+### Phantom and MetaMask checkout
+
+1. Open the storefront over HTTPS or localhost in a normal desktop browser with your chosen extension installed and unlocked. An embedded preview browser may not have access to your wallet extension.
+2. In Phantom, open **Settings → Developer Settings → Testnet Mode**, then use **Solana Devnet**, not Solana Testnet. See [Phantom's testnet guide](https://docs.phantom.com/developer-powertools/testnet-mode).
+3. MetaMask uses its native Solana account, not its Ethereum `0x` address. Use a current **desktop extension**; [MetaMask documents Solana devnet/testnet as extension-only](https://docs.metamask.io/metamask-connect/solana/quickstart/javascript/). Its mobile app is not supported for this devnet flow. Do not use the SDK's mobile QR fallback for this test.
+4. Add merchandise, continue to checkout, and choose **Connect Phantom** or **Connect MetaMask**. Approve the connection. Copy the public Solana address shown and ask the operator for TEST DRU; get devnet SOL from the [Solana faucet](https://faucet.solana.com/). The faucet supplies SOL, not this custom token. Keep at least 0.01 devnet SOL for fees and token-account rent.
+5. Choose **Pay … on devnet**. The page checks the RPC's devnet genesis hash, mint program/decimals, token balance and SOL balance, and simulates the exact transfer before opening the signing prompt. It supports classic SPL tokens, not Token-2022, and spends from the buyer's associated token account.
+6. In the wallet, review the exact mint, amount and recipient. The transaction contains an idempotent receiving-token-account creation, an exact token transfer with a reference, and a memo. It grants no spending allowance. Decline anything unexpected.
+7. After approval, the storefront submits the unchanged signed transaction to the verified devnet endpoint and shows its signature and Explorer link. **Submitted is not paid, settled, ordered, or fulfilled.** The merchant must still reconcile service-mode orders. Network failure during submission is ambiguous: check the displayed signature before another attempt.
+
+The reference, wallet session and receipt live in memory. Save the signature before refreshing. There is no global duplicate-payment protection in static mode; a reload or a changed cart is a new opportunity to pay. QR links cannot enforce a wallet's network, so use the direct connection buttons for this test. Wallet extensions may display unverified-token/domain warnings; do not disable their security checks or approve a transaction you do not understand.
+
+### Send test assets to a browser wallet (operator only)
+
+If you control the disposable `.devnet/payer.json` created by bootstrap and it holds the configured test token, run:
+
+```sh
+npm run devnet:fund -- TESTER_PUBLIC_SOLANA_ADDRESS 100
+```
+
+Replace the placeholder with the connected buyer's **public** address. This sends 100 tokens of your configured devnet mint **plus 0.02 devnet SOL** from the local demo payer in one transaction. It checks devnet identity, rejects the mainnet DRU mint, caps each token grant at 1,000, and prints a public transaction receipt. It does not mint more tokens or expose keys to the browser. A fresh fork does not contain the upstream payer's keys; bootstrap your own setup and configure its mint, or ask the upstream operator for a grant. Do not import the shared demo payer into a personal wallet.
+
 ## Run a local copy
 
 You need Node.js 22.12 or newer, npm, and a browser. Git is optional if you download a release. Use `node --version` to check Node. Run all commands below from the repository directory unless stated otherwise.
 
 ### Download a release
 
-Open [v1.0.0-devnet.1 on GitHub Releases](https://github.com/32112581321/solana-token-storefront/releases/tag/v1.0.0-devnet.1). The downloads are publicly hosted on GitHub.
+Open [v1.0.0-devnet.2 on GitHub Releases](https://github.com/32112581321/solana-token-storefront/releases/tag/v1.0.0-devnet.2). The downloads are publicly hosted on GitHub.
 
 | Download | Use it for |
 | --- | --- |
-| `solana-token-storefront-v1.0.0-devnet.1-source.zip` | The full editable project, including the storefront, local inventory service, scripts, tests, manual, and proposal |
-| `solana-token-storefront-v1.0.0-devnet.1-static.zip` | An already built storefront for a static web server; includes documentation under `docs/`, but does not run the inventory service |
+| `solana-token-storefront-v1.0.0-devnet.2-source.zip` | The full editable project, including the storefront, local inventory service, scripts, tests, manual, and proposal |
+| `solana-token-storefront-v1.0.0-devnet.2-static.zip` | An already built storefront for a static web server; includes documentation under `docs/`, but does not run the inventory service |
 | `SHA256SUMS.txt` | Checking that your downloaded ZIPs match the released bytes |
 
-For the source bundle, extract the ZIP and open a terminal inside `solana-token-storefront-v1.0.0-devnet.1`. Run:
+For the source bundle, extract the ZIP and open a terminal inside `solana-token-storefront-v1.0.0-devnet.2`. Run:
 
 ```sh
 npm ci
@@ -54,7 +76,7 @@ npm run dev
 
 Follow the rest of this manual to configure your own wallet or start inventory. No local database, signing keys, or installed dependencies are distributed. The ZIP is a source project, not a desktop installer.
 
-For the static bundle, extract it and serve the contents of its `solana-token-storefront-v1.0.0-devnet.1-static` folder. If Python 3 is installed, a local preview from inside that folder is:
+For the static bundle, extract it and serve the contents of its `solana-token-storefront-v1.0.0-devnet.2-static` folder. If Python 3 is installed, a local preview from inside that folder is:
 
 ```sh
 python3 -m http.server --bind 127.0.0.1 8080
@@ -93,6 +115,7 @@ Edit [public/storefront.config.json](public/storefront.config.json). Keep the ex
 | `storefront` | Your name, short name, tagline, description, disclosure, and six-digit theme colors |
 | `payment.enabled` | `false` to browse without generating payment requests; `true` after configuring payment |
 | `payment.network` | Always `"devnet"` in this version |
+| `payment.rpcUrl` | Optional public browser-accessible devnet RPC; defaults to `https://api.devnet.solana.com`. HTTPS, or HTTP localhost for a local proxy; never a secret API key. The direct checkout verifies devnet identity. |
 | `payment.recipient` | The public receiving wallet you control, not a token account address |
 | `payment.token.symbol` | Display text, up to 12 characters |
 | `payment.token.mint` | The exact mint address of your devnet token |
@@ -104,7 +127,7 @@ Edit [public/storefront.config.json](public/storefront.config.json). Keep the ex
 | `inventory.serviceUrl` | The inventory API base URL, required in service mode |
 | `inventory.reservationMinutes` | Reservation duration, 1–120 minutes; defaults to 15 |
 
-Addresses are public configuration. Never enter seed phrases, private keys, or RPC credentials in this file. Configuration validation checks syntax; it does not prove wallet ownership, mint existence on devnet, or the mint's decimals. Confirm those separately before a payment test.
+Addresses and RPC URLs are public configuration. Never enter seed phrases, private keys, or secret RPC credentials in this file. Use a browser-safe, origin-restricted endpoint if the public RPC is rate-limited. Configuration validation checks syntax, not chain state. Direct wallet checkout additionally checks the mint and decimals on devnet before signing; QR-only users must verify them independently. Existing schema-version-1 files without `rpcUrl` remain compatible.
 
 The upstream recipient is `8YRJP9pHJJtcDqX29hwGKmCmvBwmcyoCaKmFnyk43UNL`; its mint is `FAM2TEFYrRXFVQ8W16SkPwaeZyWPcLnjieiTMYvc6Kpw` with six decimals. Cloning the repo gives you neither control of that wallet nor access to its test tokens. Replace both with your own test setup when appropriate.
 
@@ -134,9 +157,9 @@ npm run devnet:bootstrap
 
 This is an active test script, not a read-only setup check. It generates or reuses local keypairs in `.devnet/`, requests devnet SOL when needed, creates or reuses a six-decimal mint, mints test tokens when needed, and sends 30 test tokens to its generated merchant wallet. It writes `.devnet/last-proof.json` and prints the public transaction details. The balance check in this script uses confirmed commitment; the inventory CLI separately requests finalized transactions.
 
-The script does not edit your public config. Copy its public recipient and mint into your config, with `decimals: 6`, if using that setup. Tokens initially belong to the script's payer; this does not automatically fund a browser wallet. Arrange a devnet transfer to the tester's wallet using your own token tooling before testing browser checkout.
+The script does not edit your public config. Copy its public recipient and mint into your config, with `decimals: 6`, if using that setup. Tokens initially belong to the script's payer; run `devnet:fund` above to give your browser wallet test assets.
 
-If the airdrop fails, the script prints the payer's public address. Use an available devnet faucet or an already funded devnet test wallet, then rerun. Do not purchase devnet tokens or fund the address on mainnet. Leave custom RPC overrides unset unless you have verified that the endpoint is devnet; these scripts do not independently enforce the cluster identity of an override.
+If the airdrop fails, the script prints the payer's public address. Use an available devnet faucet or an already funded devnet test wallet, then rerun. Do not purchase devnet tokens or fund the address on mainnet. Bootstrap, funding, direct checkout and CLI reconciliation check the RPC's genesis hash and reject a non-devnet endpoint.
 
 The `.devnet/` directory contains signing material and is ignored by Git. Do not copy it into a public directory or commit it. The checked-in `public/devnet-proof.json` is a separate historical artifact and is not rewritten by bootstrap.
 
@@ -211,7 +234,7 @@ Have the operator and tester ready together. This version requires manual reconc
 1. Load the local storefront, choose an in-stock variant, and add it to the cart.
 2. Select **Continue to devnet payment** once. The service creates an order snapshot and reserves the requested units. A successful response supplies the QR and wallet link.
 3. Save the order ID and expiry shown on the page. The order ID is different from the Solana reference and transaction signature.
-4. Open a compatible wallet on devnet. Check the receiving wallet, exact mint, and total before approving. Use the generated payment request so its reference and memo are preserved.
+4. Connect Phantom or MetaMask and select **Pay … on devnet**. Check the receiving wallet, exact mint, and total before approving. The transaction preserves the service's reference and memo. A compatible Solana Pay wallet remains an alternative.
 5. Give the operator the order ID and transaction signature. Do not supply a seed phrase or private key.
 6. The operator runs the reconciliation command below before the reservation expires. Once the transaction is finalized and matches, the CLI reports `fulfillment_pending` and stock is deducted.
 
@@ -220,9 +243,9 @@ The Solana Pay request itself does not select the wallet network. Its fields fol
 ### Current timing and refresh behavior
 
 - Reconciliation uses the time the CLI runs to decide whether the reservation is still valid. Even a payment sent before expiry can become an `exception` if it is reconciled afterward.
-- The page does not automatically remove an expired QR or show a verified success state. Do not pay an old request after its displayed expiry.
+- The page removes expired payment controls and checks expiry again after signing, before direct submission. It cannot revoke a QR you already scanned or guarantee confirmation before expiry. No verified success state is shown.
 - Only the cart's SKU/quantity pairs survive refresh. A reservation ID is not restored into the browser; save it before paying. The operator can still find it in `orders`.
-- Repeating Continue can create another reservation. Changing the cart attempts to cancel its previous reservation; a failed cancellation leaves it held until expiry. Avoid repeated checkout attempts during a rehearsal.
+- Continue reuses an unexpired reservation for the same cart. Cart editing is paused during reservation creation and wallet requests. Changing the cart attempts to cancel its previous unpaid reservation; once submission has been attempted, the order is left for the merchant to reconcile instead. A failed cancellation leaves stock held until expiry.
 - Stock shown on product cards is a startup snapshot. Reload to see newly received stock; the reservation endpoint is authoritative if another buyer took the last unit.
 
 Reservations are released lazily when inventory is read, a reservation is created, or payment is reconciled. There is no scheduled expiry worker or automatic payment watcher. Listing orders alone does not refresh expired statuses; run `list` to trigger inventory expiry processing.
@@ -283,6 +306,8 @@ Payments go directly to the configured receiving wallet's token account. The rep
 
 The database and `.devnet/` are ignored by Git. They are not backed up by pushing your repository. The application does not request customer names, email addresses, or delivery information. Keep delivery records outside public config, transaction memos, and GitHub issues.
 
+The storefront persists only versioned SKU/quantity cart data. MetaMask Connect may separately store its own connection/session metadata. Its analytics are disabled in this integration. Wallet secrets remain in the extension; the application receives a public address and signed transaction. Connecting also involves the wallet vendor's software and services.
+
 For a simple local backup, stop the inventory server with Ctrl+C and ensure no CLI process is writing, then copy the entire `.inventory/` directory to private backup storage. Include any SQLite `-wal` and `-shm` files that exist; copying only the main file while a process is writing can miss committed data. Use SQLite-aware backup tooling if continuous operation is required. Restore with all writers stopped, then run `list` and `orders` to check the restored ledger.
 
 Do not delete the database as a routine reset while payments or orders exist. It is the record that associates payments with stock and protects against signature reuse within that store.
@@ -339,6 +364,10 @@ The service has no authentication, rate limiting, or abuse controls on its publi
 | Products are out of stock | Run `list`, receive the exact active SKU, and reload the storefront. Initialization intentionally creates zero stock. |
 | Reservation failed despite a visible item | Another hold may have consumed stock. Check `list`, wait for abandoned holds to expire, and reload. |
 | Wallet link does nothing | Use a wallet that supports Solana Pay transfer requests and devnet, or scan its QR on a supported device. |
+| Phantom is not detected | Open the page in the desktop browser where the extension is installed, unlock it, and retry. Embedded preview browsers may not expose extensions. |
+| MetaMask mobile cannot connect | Solana devnet is extension-only in MetaMask. Use its desktop extension and native Solana account. |
+| RPC fails or is rate-limited | Retry later or configure a public browser-safe devnet RPC in `payment.rpcUrl`; CLI reconciliation uses `SOLANA_RPC_URL` separately. Do not expose secret RPC keys. |
+| Submission outcome unknown | Save and inspect the shown signature on devnet Explorer. Do not immediately retry or refresh and pay again. |
 | Wallet shows no test tokens | Match the mint and network; ask the operator to fund your test wallet. Bootstrap only funds its generated payer. |
 | Finalized transaction not found | Check the network/signature and allow finalization time. If the hold expires meanwhile, handle the result as an exception. |
 | Reference, memo, or amount mismatch | Inspect the original transaction. Do not fulfill or resend payment based on the page or a screenshot. |
@@ -366,3 +395,7 @@ npm run test:e2e
 `validate-config` validates the current public config, catalog, and local image files. The browser smoke suite targets the starter DRU catalog, so a fork that replaces product names, SKUs, counts, or layout should adapt those fixtures. The historical transfer proof is tested separately from your current payment settings.
 
 The code, SQLite tests, and browser tests are available for inspection. Passing them is useful evidence for development; it does not certify readiness to handle public mainnet orders.
+
+Wallet browser tests use Wallet Standard mocks and a simulated RPC; they verify real serialized/signable transaction bytes, not installed extensions. A separate **opt-in, network-mutating** smoke test sends one base unit from `.devnet/payer.json` using the same builder: `DEVNET_WALLET_SMOKE=1 npx vitest run tests/devnet-wallet-live.test.ts`. Never enable it in CI; the standard suite skips it. Test actual extension approvals separately before inviting users.
+
+The current MetaMask dependency tree has an npm advisory through its transitive `uuid` dependency (GHSA-w5hq-g745-h8pq). Local tooling also retains the Solana-library advisories disclosed in the previous release. Run `npm audit` for current details; this is an unaudited devnet preview, not a security-certified payment system.

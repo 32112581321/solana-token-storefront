@@ -14,6 +14,7 @@ export async function verifyFinalizedPayment(
 ): Promise<VerifiedPayment> {
   if (!/^[1-9A-HJ-NP-Za-km-z]{64,90}$/.test(signature)) throw new Error('Invalid Solana transaction signature.');
   const connection = new Connection(rpcUrl, 'finalized');
+  if (await connection.getGenesisHash() !== 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG') throw new Error('RPC is not Solana devnet.');
   const transaction = await connection.getParsedTransaction(signature, {
     commitment: 'finalized',
     maxSupportedTransactionVersion: 0,

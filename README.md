@@ -8,7 +8,7 @@ The idea is straightforward. Offer merchandise people want, let them pay with th
 
 | Start here | What you will find |
 | --- | --- |
-| [Download v1.0.0-devnet.1](https://github.com/32112581321/solana-token-storefront/releases/tag/v1.0.0-devnet.1) | Free GitHub-hosted source and prebuilt storefront ZIPs, with checksums |
+| [Download v1.0.0-devnet.2](https://github.com/32112581321/solana-token-storefront/releases/tag/v1.0.0-devnet.2) | Free GitHub-hosted source and prebuilt storefront ZIPs, with checksums |
 | [Community proposal](COMMUNITY_PROPOSAL.md) | The contribution, the case for a trial, proposed profit allocation, and ways token holders can participate |
 | [User manual](USER_MANUAL.md) | Local setup, wallet configuration, inventory, devnet checkout, merchant operations, hosting, and troubleshooting |
 | [Browse the demonstration](https://32112581321.github.io/solana-token-storefront/) | Eight DRU reference products, variants, cart, and a devnet wallet handoff |
@@ -19,7 +19,8 @@ The idea is straightforward. Offer merchandise people want, let them pay with th
 - Eight active Daily Roman Updates reference products and three original, non-purchasable design concepts, with local images.
 - Variant selection, visible **Add to cart** controls, quantity changes, and a cart that survives refresh.
 - Prices stored as decimal strings and totaled using integer token units.
-- Solana Pay QR codes and wallet links with recipient, mint, exact amount, reference, and memo.
+- Direct Phantom and MetaMask desktop-extension checkout on Solana devnet, with explicit connection and signing, mint/balance checks, simulation, and a transaction signature link. MetaMask mobile does not support Solana devnet.
+- Alternative Solana Pay QR codes and wallet links with recipient, mint, exact amount, reference, and memo.
 - An optional Node/SQLite service for stock, expiring reservations, order snapshots, manual payment reconciliation, and fulfillment status.
 - A merchant CLI and automated configuration, unit, inventory, and browser checks.
 
@@ -27,7 +28,7 @@ The implementation uses Vite, vanilla TypeScript, HTML, and CSS. The optional se
 
 ## Try it on your computer
 
-For a download without Git, get the **source ZIP** from the [release page](https://github.com/32112581321/solana-token-storefront/releases/tag/v1.0.0-devnet.1), extract it, and open a terminal in its folder. Install Node.js 22.12 or newer, then run `npm ci` and `npm run dev`. The source bundle includes the local inventory service, user manual, and community proposal. It does not include installed dependencies.
+For a download without Git, get the **source ZIP** from the [release page](https://github.com/32112581321/solana-token-storefront/releases/tag/v1.0.0-devnet.2), extract it, and open a terminal in its folder. Install Node.js 22.12 or newer, then run `npm ci` and `npm run dev`. The source bundle includes the local inventory service, user manual, and community proposal. It does not include installed dependencies.
 
 To clone with Git instead, run:
 
@@ -42,6 +43,8 @@ npm run dev
 Open the local URL printed by Vite, normally `http://127.0.0.1:5173/`. Browse products and try the cart. No deployment is necessary for this local trial. Internet access is still needed for installation and Solana transactions.
 
 The checked-in configuration uses the upstream demo's receiving wallet and a disposable `TEST DRU` devnet mint. **Fork owners must set their own receiving wallet before collecting any test payments intended for them.** See the [configuration instructions](USER_MANUAL.md#configure-your-store).
+
+To test with a browser wallet, follow [Phantom and MetaMask checkout](USER_MANUAL.md#phantom-and-metamask-checkout). You need tokens of the configured devnet mint and at least 0.01 devnet SOL. Operators can use `npm run devnet:fund -- PUBLIC_SOLANA_ADDRESS 100` to send test assets from their local demo payer. Never share or import its private keys into a personal wallet. Submitted transactions do not create real merchandise orders.
 
 ## Choose how to run it
 

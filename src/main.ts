@@ -21,6 +21,7 @@ import { buildSolanaPayUrl, createPaymentIntent, isPaymentIntentCurrent } from '
 import { shortAddress } from './domain/solana';
 import type { CartLine, Catalog, PaymentIntent, Product, ProductVariant, StorefrontConfig } from './domain/types';
 import { validateCatalog, validateStorefrontConfig } from './domain/validation';
+import { connectWallet, type WalletName, type WalletSession } from './wallets';
 
 const root = document.querySelector<HTMLDivElement>('#app')!;
 if (!root) throw new Error('Missing #app root.');
@@ -34,6 +35,10 @@ interface AppState {
   reservation: ReservationResponse | null;
   reservationError: string | null;
   reservationPending: boolean;
+  wallet: WalletSession | null;
+  walletBusy: string | null;
+  walletError: string | null;
+  receipt: { signature: string; reference: string; amount: string; status: string } | null;
 }
 
 function escapeHtml(value: string): string {
@@ -280,6 +285,11 @@ async function renderCheckout(state: AppState): Promise<void> {
     container.innerHTML = `${summary}<div class="checkout-notice warning"><strong>Inventory reservation failed.</strong><p>${escapeHtml(state.reservationError)}</p><p>Update the cart or try checkout again.</p></div>`;
     return;
   }
+  if (state.reservation && Date.parse(state.reservation.expiresAt) <= Date.now() && !state.receipt && !state.walletBusy) {
+    state.reservationError = 'This reservation expired. Continue from the cart to reserve again before paying.';
+    await renderCheckout(state);
+    return;
+  }
   if (isServiceMode(state.config) && !state.reservation) {
     container.innerHTML = `${summary}<div class="checkout-notice"><strong>Inventory service is ready.</strong><p>Continue from the cart to reserve stock and generate a payment request. No QR is issued before a reservation succeeds.</p></div>`;
     return;
@@ -313,16 +323,102 @@ async function renderCheckout(state: AppState): Promise<void> {
   const boundary = reservation
     ? '<div class="checkout-notice warning"><strong>Payment is not automatic fulfillment.</strong><p>The merchant must reconcile the finalized devnet transaction from the local CLI before stock becomes fulfillment-pending.</p></div>'
     : '<div class="checkout-notice warning"><strong>No success state is shown.</strong><p>This static template cannot verify settlement or trigger fulfillment.</p></div>';
-  container.innerHTML = `${summary}<div class="checkout-ready"><p>Scan with a compatible wallet or open the wallet link on this device. Confirm that the wallet is connected to <strong>devnet</strong>.</p><div class="qr-frame"><span>Preparing QR…</span></div><div class="checkout-actions"><a class="button button-primary" href="${escapeHtml(url)}" data-wallet-link>Open wallet</a><a class="button button-secondary" href="https://explorer.solana.com/address/${escapeHtml(state.config.payment.token.mint)}?cluster=devnet" target="_blank" rel="noreferrer">Inspect devnet mint</a><a class="button button-secondary" href="./devnet-proof.json" target="_blank" rel="noreferrer" data-devnet-proof>View verified test transfer</a></div>${orderDetails}<small>Reference: <code>${escapeHtml(intent.reference)}</code></small>${boundary}</div>`;
+  const allowHandoff = !state.walletBusy && !state.receipt;
+  container.innerHTML = `${summary}<div class="checkout-ready">${walletPanel(state, amount)}
+    ${allowHandoff ? `<details class="wallet-alternative"><summary>Alternative: Solana Pay QR / wallet link</summary><p>This URI cannot select a network. Only use a compatible wallet already set to <strong>devnet</strong>. MetaMask users should use Connect MetaMask above.</p><div class="qr-frame"><span>Preparing QR…</span></div><a class="button button-secondary" href="${escapeHtml(url)}" data-wallet-link>Open wallet</a></details>` : ''}
+    <div class="checkout-actions"><a class="button button-secondary" href="https://explorer.solana.com/address/${escapeHtml(state.config.payment.token.mint)}?cluster=devnet" target="_blank" rel="noreferrer">Inspect devnet mint</a><a class="button button-secondary" href="./devnet-proof.json" target="_blank" rel="noreferrer" data-devnet-proof>View verified test transfer</a></div>${orderDetails}<small>Reference: <code>${escapeHtml(intent.reference)}</code></small>${boundary}</div>`;
 
+  if (!allowHandoff) return;
   try {
     const dataUrl = await QRCode.toDataURL(url, { width: 320, margin: 1, errorCorrectionLevel: 'M', color: { dark: '#120d0b', light: '#fffaf0' } });
-    if (fingerprint !== cartFingerprint(state.cart)) return;
+    if (fingerprint !== cartFingerprint(state.cart) || state.intent?.reference !== intent.reference || state.walletBusy || state.receipt) return;
     const frame = container.querySelector<HTMLElement>('.qr-frame');
     if (frame) frame.innerHTML = `<img src="${dataUrl}" alt="Solana Pay QR code for ${escapeHtml(amount)} ${escapeHtml(symbol)} on devnet">`;
   } catch {
     const frame = container.querySelector<HTMLElement>('.qr-frame');
     if (frame) frame.textContent = 'QR generation failed. Use the wallet link instead.';
+  }
+}
+
+function walletPanel(state: AppState, amount: string): string {
+  const busy = state.walletBusy;
+  const receipt = state.receipt;
+  return `<section class="wallet-panel" aria-label="Connected wallet checkout">
+    <h3>Approve a test payment in your wallet</h3>
+    <p>Use a desktop browser with Phantom or MetaMask installed. In Phantom, enable Settings → Developer Settings → Testnet Mode and select Solana Devnet. MetaMask mobile does not support Solana devnet.</p>
+    ${state.wallet ? `<p>Connected to ${state.wallet.name} · Solana devnet<br><code class="wallet-address">${escapeHtml(state.wallet.address)}</code></p>
+      <div class="checkout-actions"><button class="button button-primary" type="button" data-pay-wallet ${busy || receipt ? 'disabled' : ''}>Pay ${escapeHtml(amount)} ${escapeHtml(state.config.payment.token.symbol)} on devnet</button><button class="button button-secondary" type="button" data-disconnect-wallet ${busy ? 'disabled' : ''}>Disconnect</button></div>`
+    : `<div class="checkout-actions"><button class="button button-primary" type="button" data-connect-wallet="Phantom" ${busy || receipt ? 'disabled' : ''}>Connect Phantom</button><button class="button button-secondary" type="button" data-connect-wallet="MetaMask" ${busy || receipt ? 'disabled' : ''}>Connect MetaMask</button></div>`}
+    <p class="wallet-status" role="status">${escapeHtml(busy ?? '')}</p>
+    ${state.walletError ? `<p class="checkout-notice warning" role="alert">${escapeHtml(state.walletError)}</p>` : ''}
+    ${receipt ? `<div class="checkout-notice" data-transaction-receipt><strong>${escapeHtml(receipt.status)}</strong><p>${escapeHtml(receipt.amount)} ${escapeHtml(state.config.payment.token.symbol)} · Solana devnet. This is not an order or fulfillment confirmation. Do not pay again before checking this transaction.</p><a href="https://explorer.solana.com/tx/${escapeHtml(receipt.signature)}?cluster=devnet" target="_blank" rel="noreferrer">Inspect this transaction on devnet</a><code class="wallet-address">${escapeHtml(receipt.signature)}</code></div>` : ''}
+    <details><summary>Need test SOL or TEST DRU?</summary><p>You need tokens of the exact mint shown above, plus at least 0.01 devnet SOL for fees and account rent. Give the demo operator your connected public Solana address to request test tokens. Never share a seed phrase or private key.</p><p><a href="https://faucet.solana.com/" target="_blank" rel="noreferrer">Devnet SOL faucet</a> · <a href="https://phantom.com/" target="_blank" rel="noreferrer">Install Phantom</a> · <a href="https://metamask.io/" target="_blank" rel="noreferrer">Install MetaMask</a></p><p>Do not buy or send real SOL or mainnet DRU for this test. Connecting does not authorize payment; review the separate signing prompt.</p></details>
+  </section>`;
+}
+
+function walletError(error: unknown): string {
+  if (error && typeof error === 'object' && 'code' in error && error.code === 4001) return 'Request declined in your wallet. Nothing was submitted by this storefront.';
+  return error instanceof Error ? error.message : 'Wallet request failed. Check your extension and devnet settings.';
+}
+
+async function beginWalletConnection(state: AppState, name: WalletName): Promise<void> {
+  if (state.walletBusy || state.receipt) return;
+  state.walletBusy = `Unlock ${name} and approve the connection. Cart editing is paused while the request is open.`;
+  state.walletError = null;
+  void renderCheckout(state);
+  try {
+    const session = await connectWallet(name, state.config, () => {
+      state.wallet = null;
+      state.walletError = 'Wallet account or network changed. Reconnect before paying.';
+      void renderCheckout(state);
+    });
+    state.wallet = session;
+  } catch (error) {
+    state.walletError = walletError(error);
+  } finally {
+    state.walletBusy = null;
+    void renderCheckout(state);
+  }
+}
+
+async function payWithWallet(state: AppState): Promise<void> {
+  if (!state.wallet || state.walletBusy || state.receipt || !state.intent || !state.config.payment.enabled) return;
+  const session = state.wallet;
+  const intent = state.intent;
+  const units = cartTotalUnits(resolveCart(state.cart, state.catalog, state.config.payment.token.decimals));
+  const assertCurrent = () => {
+    if (state.wallet !== session || state.intent?.reference !== intent.reference || !isPaymentIntentCurrent(intent, state.cart)) throw new Error('The wallet or cart changed. Nothing was submitted.');
+    if (isServiceMode(state.config) && (!state.reservation || Date.parse(state.reservation.expiresAt) <= Date.now())) throw new Error('Reservation expired. Reserve stock again before paying.');
+  };
+  state.walletBusy = 'Checking devnet, mint, test balances and transaction simulation…';
+  state.walletError = null;
+  void renderCheckout(state);
+  try {
+    assertCurrent();
+    const { preparePayment, inspectSignedPayment } = await import('./domain/transaction');
+    const prepared = await preparePayment(state.config, session.address, units, intent);
+    assertCurrent();
+    state.walletBusy = `Review and approve in ${session.name}. Cart editing is paused. Only devnet test tokens will be sent.`;
+    void renderCheckout(state);
+    const signed = await session.sign(prepared.bytes);
+    assertCurrent();
+    const inspected = inspectSignedPayment(prepared.bytes, signed);
+    const height = await prepared.rpc.getBlockHeight({ commitment: 'confirmed' }).send({ abortSignal: AbortSignal.timeout(20_000) });
+    if (height > prepared.lifetime.lastValidBlockHeight) throw new Error('The signing request expired. Nothing was submitted; try again for a fresh blockhash.');
+    assertCurrent();
+    // Record the signature BEFORE broadcasting. A timeout is ambiguous, never a safe automatic retry.
+    state.receipt = { signature: inspected.signature, reference: intent.reference, amount: formatTokenAmount(units, state.config.payment.token.decimals), status: 'Submission in progress—do not pay again.' };
+    state.walletBusy = 'Submitting the signed transaction to devnet…';
+    void renderCheckout(state);
+    const acknowledged = await prepared.rpc.sendTransaction(inspected.wire, { encoding: 'base64', preflightCommitment: 'confirmed', skipPreflight: false, maxRetries: 3n }).send({ abortSignal: AbortSignal.timeout(30_000) });
+    if (acknowledged !== inspected.signature) throw new Error('RPC returned an unexpected signature. Inspect the signed transaction before another attempt.');
+    state.receipt.status = 'Transaction submitted to devnet.';
+  } catch (error) {
+    if (state.receipt) state.receipt.status = 'Submission outcome unknown. Check the transaction before trying again.';
+    state.walletError = walletError(error);
+  } finally {
+    state.walletBusy = null;
+    void renderCheckout(state);
   }
 }
 
@@ -350,7 +446,9 @@ function persistAndRender(state: AppState): void {
   state.intent = null;
   state.reservation = null;
   state.reservationError = null;
-  if (cancelledReservation) void cancelReservation(state, cancelledReservation.id);
+  if (cancelledReservation && !state.receipt) void cancelReservation(state, cancelledReservation.id);
+  state.receipt = null;
+  state.walletError = null;
   localStorage.setItem(CART_STORAGE_KEY, serializeCart(state.cart));
   renderCart(state);
 }
@@ -397,6 +495,8 @@ async function beginCheckout(state: AppState): Promise<void> {
   closeCart();
   document.querySelector('#checkout')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   if (!isServiceMode(state.config)) return;
+  if (state.reservationPending || state.walletBusy || state.receipt) return;
+  if (state.reservation && !state.reservationError && Date.parse(state.reservation.expiresAt) > Date.now()) return;
   state.reservationPending = true;
   state.reservationError = null;
   await renderCheckout(state);
@@ -438,6 +538,16 @@ function bindInteractions(state: AppState): void {
 
   document.addEventListener('click', (event) => {
     const target = event.target as Element;
+    const walletButton = target.closest<HTMLButtonElement>('[data-connect-wallet]');
+    if (walletButton) void beginWalletConnection(state, walletButton.dataset.connectWallet as WalletName);
+    if (target.closest('[data-pay-wallet]')) void payWithWallet(state);
+    if (target.closest('[data-disconnect-wallet]') && !state.walletBusy) {
+      const session = state.wallet;
+      state.wallet = null;
+      void session?.disconnect().catch(() => { /* Locally disconnected even if permission revocation fails. */ });
+      void renderCheckout(state);
+    }
+    if ((state.walletBusy || state.reservationPending) && target.closest('[data-add-product], [data-increment], [data-decrement], [data-remove], [data-proceed-checkout]')) return;
     const productButton = target.closest<HTMLButtonElement>('[data-add-product]');
     if (productButton) {
       const product = state.catalog.products.find((item) => item.id === productButton.dataset.addProduct);
@@ -512,6 +622,10 @@ async function start(): Promise<void> {
       reservation: null,
       reservationError: null,
       reservationPending: false,
+      wallet: null,
+      walletBusy: null,
+      walletError: null,
+      receipt: null,
     };
     const validSkus = new Set(state.catalog.products.flatMap((product) => product.variants.map((variant) => variant.sku)));
     state.cart = state.cart
@@ -521,6 +635,9 @@ async function start(): Promise<void> {
     renderShell(state.config, state.catalog, state.inventory);
     bindInteractions(state);
     renderCart(state);
+    window.setInterval(() => {
+      if (state.reservation && !state.reservationError && !state.receipt && !state.walletBusy && Date.parse(state.reservation.expiresAt) <= Date.now()) void renderCheckout(state);
+    }, 1_000);
   } catch (error) {
     renderFatal([error instanceof Error ? error.message : 'Unknown startup error.']);
   }

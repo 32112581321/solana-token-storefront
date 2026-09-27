@@ -7,3 +7,5 @@ test-results/
 .inventory-build/
 .DS_Store
 *.log
+.env
+.env.*

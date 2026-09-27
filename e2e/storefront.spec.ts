@@ -61,6 +61,7 @@ test('fails closed when payment configuration is disabled', async ({ page }) => 
   await expect(page.getByText('Checkout is intentionally disabled.')).toBeVisible();
   await expect(page.locator('[data-wallet-link]')).toHaveCount(0);
   await expect(page.locator('.qr-frame')).toHaveCount(0);
+  await expect(page.locator('[data-connect-wallet]')).toHaveCount(0);
 });
 
 test('creates an exact devnet QR and wallet handoff when configured', async ({ page }) => {
@@ -71,6 +72,7 @@ test('creates an exact devnet QR and wallet handoff when configured', async ({ p
   await page.locator('[data-product-card]').first().getByRole('button', { name: 'Add to cart' }).click();
   await page.getByRole('button', { name: 'Continue to devnet payment' }).click();
   const walletLink = page.locator('[data-wallet-link]');
+  await page.getByText('Alternative: Solana Pay QR / wallet link').click();
   await expect(walletLink).toBeVisible();
   const href = await walletLink.getAttribute('href');
   expect(href).toContain('solana:11111111111111111111111111111111?');
@@ -136,6 +138,7 @@ test('reserves tracked stock before issuing a service-mode payment request', asy
   await expect(page.getByRole('button', { name: 'Increase quantity' })).toBeDisabled();
   await page.getByRole('button', { name: 'Continue to devnet payment' }).click();
   const walletLink = page.locator('[data-wallet-link]');
+  if (!await walletLink.isVisible()) await page.getByText('Alternative: Solana Pay QR / wallet link').click();
   await expect(walletLink).toBeVisible();
   const href = await walletLink.getAttribute('href');
   expect(href).toContain('amount=30');

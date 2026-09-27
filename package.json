@@ -1,11 +1,12 @@
 {
   "name": "solana-token-storefront",
-  "version": "1.0.0-devnet.1",
+  "version": "1.0.0-devnet.2",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "npm run validate-config && npm run typecheck && npm run inventory:build && vite build",
     "devnet:bootstrap": "node scripts/bootstrap-devnet.mjs",
+    "devnet:fund": "node scripts/fund-devnet-wallet.mjs",
     "dev": "vite --host 127.0.0.1",
     "inventory:admin": "npm run inventory:build --silent && node --experimental-sqlite .inventory-build/server/cli.js",
     "inventory:build": "tsc --project server/tsconfig.json",
@@ -19,6 +20,11 @@
     "validate-config": "vitest run tests/config-files.test.ts --config vitest.config.ts --reporter=verbose"
   },
   "dependencies": {
+    "@metamask/connect-multichain": "1.2.0",
+    "@metamask/connect-solana": "2.1.1",
+    "@solana-program/token": "0.17.0",
+    "@solana/kit": "8.3.0",
+    "@wallet-standard/app": "1.1.1",
     "qrcode": "1.5.4"
   },
   "devDependencies": {

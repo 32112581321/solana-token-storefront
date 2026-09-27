@@ -98,6 +98,7 @@ async function loadOrCreateMint(connection, payer) {
 
 const connection = new Connection(rpcUrl, 'confirmed');
 const genesisHash = await connection.getGenesisHash();
+if (genesisHash !== 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG') throw new Error('RPC is not Solana devnet. Nothing was sent.');
 const payer = await loadOrCreateKeypair('payer');
 const merchant = await loadOrCreateKeypair('merchant');
 const payerLamports = await ensurePayerBalance(connection, payer);

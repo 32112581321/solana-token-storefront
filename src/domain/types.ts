@@ -18,6 +18,8 @@ export interface StorefrontConfig {
   payment: {
     enabled: boolean;
     network: 'devnet';
+    /** Public browser-accessible RPC; its genesis hash is checked before signing. */
+    rpcUrl?: string;
     recipient: string;
     token: {
       symbol: string;

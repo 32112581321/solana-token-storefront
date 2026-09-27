@@ -49,6 +49,16 @@ export function validateStorefrontConfig(value: unknown): ValidationResult<Store
   else {
     if (typeof payment.enabled !== 'boolean') errors.push('payment.enabled must be true or false.');
     if (payment.network !== 'devnet') errors.push('payment.network must be "devnet".');
+    if (payment.rpcUrl !== undefined) {
+      try {
+        if (typeof payment.rpcUrl !== 'string') throw new Error('type');
+        const rpc = new URL(payment.rpcUrl);
+        const local = ['localhost', '127.0.0.1', '[::1]'].includes(rpc.hostname);
+        if ((rpc.protocol !== 'https:' && !(rpc.protocol === 'http:' && local)) || rpc.username || rpc.password || rpc.hash) throw new Error('url');
+      } catch {
+        errors.push('payment.rpcUrl must be a public HTTPS URL (or HTTP localhost), without credentials or a fragment.');
+      }
+    }
     if (typeof payment.recipient !== 'string') errors.push('payment.recipient must be a string.');
     if (!nonEmptyString(payment.label)) errors.push('payment.label must be a non-empty string.');
     if (!nonEmptyString(payment.memoPrefix) || !/^[A-Z0-9-]{2,24}$/.test(payment.memoPrefix)) {
@@ -67,7 +77,7 @@ export function validateStorefrontConfig(value: unknown): ValidationResult<Store
       if (typeof payment.token.mint === 'string' && payment.token.mint && !isSolanaAddress(payment.token.mint)) {
         errors.push('payment.token.mint must be a valid Solana address when provided.');
       }
-      if (typeof payment.token.mint === 'string' && Array.isArray(payment.blockedMints) && payment.blockedMints.includes(payment.token.mint)) {
+      if (typeof payment.token.mint === 'string' && (payment.token.mint === '14kH2osUyEJnqBZ7yFK4pLKJGuPZU4pr1enhi2ZLEmRw' || (Array.isArray(payment.blockedMints) && payment.blockedMints.includes(payment.token.mint)))) {
         errors.push('payment.token.mint is blocked for this devnet storefront.');
       }
     }

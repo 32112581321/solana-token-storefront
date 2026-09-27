@@ -14,6 +14,7 @@
   "payment": {
     "enabled": true,
     "network": "devnet",
+    "rpcUrl": "https://api.devnet.solana.com",
     "recipient": "8YRJP9pHJJtcDqX29hwGKmCmvBwmcyoCaKmFnyk43UNL",
     "token": {
       "symbol": "TEST DRU",

@@ -166,3 +166,12 @@ footer { padding: 2rem 4vw; display: flex; justify-content: space-between; gap: 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+/* Wallet controls remain readable on narrow screens and for full public addresses. */
+.wallet-panel { border: 1px solid currentColor; border-radius: 12px; padding: 1.25rem; margin-block: 1.25rem; }
+.wallet-panel h3 { margin-top: 0; }
+.wallet-panel details, .wallet-alternative { margin-block: 1rem; }
+.wallet-panel summary, .wallet-alternative summary { cursor: pointer; font-weight: 700; }
+.wallet-address { display: block; overflow-wrap: anywhere; margin-block: .5rem; font-size: .8rem; }
+.wallet-status:empty { display: none; }
+.wallet-status { font-weight: 700; }
+.wallet-panel .checkout-actions { flex-wrap: wrap; }
