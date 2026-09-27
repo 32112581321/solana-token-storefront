@@ -90,9 +90,11 @@ npm run build            # validate, typecheck, and create dist/
 npm run preview          # preview the production build locally
 ```
 
-## Bring your own hosting
+## Hosting
 
-This repository intentionally does not deploy anything and contains no deployment workflow. Build the static site with:
+The upstream demo is published with the repository's GitHub Pages workflow. The workflow is restricted to `32112581321/solana-token-storefront`, so forks do not publish automatically. Fork owners can remove or update that repository check in `.github/workflows/pages.yml`, enable GitHub Pages with **GitHub Actions** as the source, and run the workflow.
+
+For any host, build the static site with:
 
 ```sh
 npm ci
@@ -103,7 +105,7 @@ Publish the generated `dist/` directory. The production build uses relative asse
 
 | Host | Build command | Output directory | Notes |
 | --- | --- | --- | --- |
-| GitHub Pages | `npm ci && npm run build` | `dist` | Use any Pages action that uploads `dist`; repository-subpath hosting is supported. |
+| GitHub Pages | `npm ci && npm run build` | `dist` | The included Pages workflow uploads `dist`; repository-subpath hosting is supported. |
 | Cloudflare Pages | `npm ci && npm run build` | `dist` | Select the Node 22 runtime. |
 | Netlify | `npm ci && npm run build` | `dist` | No functions or redirect rules are required. |
 | Vercel | `npm ci && npm run build` | `dist` | Choose Vite or Other; do not add server functions. |
