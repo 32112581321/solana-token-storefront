@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "network": "devnet",
+  "genesisHash": "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG",
+  "token": {
+    "symbol": "TEST DRU",
+    "mint": "FAM2TEFYrRXFVQ8W16SkPwaeZyWPcLnjieiTMYvc6Kpw",
+    "decimals": 6
+  },
+  "payer": "ArP2zkYmAztx337pzujDBu4J1pYPeHo451C7b76T449P",
+  "recipient": "8YRJP9pHJJtcDqX29hwGKmCmvBwmcyoCaKmFnyk43UNL",
+  "recipientTokenAccount": "3zEvgkwmYMEG9TbhihBYoZEpTd7XsT5g1kbZDeLmfH66",
+  "amount": "30",
+  "amountMinorUnits": "30000000",
+  "reference": "64YDUtmNS3cFqaELQDriMD24SyfqDwaoFvmVaP3TbjXc",
+  "memo": "DRU-DEV-64YDUtmNS3cF",
+  "signature": "3MLUvuYppeqJt4DFC6tY1RXxMyznBRTcjmv2vy5bQfsHr925tKqb4PkWh8oisPfX8E4dJR57kqNUDktejE8kMUWz",
+  "slot": 504702740,
+  "recipientBalanceBefore": "0",
+  "recipientBalanceAfter": "30000000",
+  "verifiedAt": "2026-09-27T07:24:39.194Z",
+  "explorerUrl": "https://explorer.solana.com/tx/3MLUvuYppeqJt4DFC6tY1RXxMyznBRTcjmv2vy5bQfsHr925tKqb4PkWh8oisPfX8E4dJR57kqNUDktejE8kMUWz?cluster=devnet"
+}

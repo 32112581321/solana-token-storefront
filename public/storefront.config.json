@@ -12,12 +12,12 @@
     }
   },
   "payment": {
-    "enabled": false,
+    "enabled": true,
     "network": "devnet",
-    "recipient": "",
+    "recipient": "8YRJP9pHJJtcDqX29hwGKmCmvBwmcyoCaKmFnyk43UNL",
     "token": {
       "symbol": "TEST DRU",
-      "mint": "",
+      "mint": "FAM2TEFYrRXFVQ8W16SkPwaeZyWPcLnjieiTMYvc6Kpw",
       "decimals": 6
     },
     "label": "DRU Supply Office — devnet demonstration",

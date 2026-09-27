@@ -17,6 +17,16 @@ const enabledConfig = {
   },
 };
 
+const disabledConfig = {
+  ...enabledConfig,
+  payment: {
+    ...enabledConfig.payment,
+    enabled: false,
+    recipient: '',
+    token: { ...enabledConfig.payment.token, mint: '' },
+  },
+};
+
 test('offers explicit commerce controls without outbound store links', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('button', { name: 'Add to cart' })).toHaveCount(8);
@@ -42,6 +52,9 @@ test('selects a variant, persists the cart, and supports keyboard closing', asyn
 });
 
 test('fails closed when payment configuration is disabled', async ({ page }) => {
+  await page.route('**/storefront.config.json', async (route) => {
+    await route.fulfill({ json: disabledConfig });
+  });
   await page.goto('/');
   await page.locator('[data-product-card]').first().getByRole('button', { name: 'Add to cart' }).click();
   await page.getByRole('button', { name: 'Continue to devnet payment' }).click();
@@ -65,6 +78,7 @@ test('creates an exact devnet QR and wallet handoff when configured', async ({ p
   expect(href).toContain('spl-token=So11111111111111111111111111111111111111112');
   expect(href).toContain('reference=');
   await expect(page.locator('.qr-frame img')).toBeVisible();
+  await expect(page.locator('[data-devnet-proof]')).toHaveAttribute('href', './devnet-proof.json');
   await expect(page.getByText('No success state is shown.')).toBeVisible();
 });
 

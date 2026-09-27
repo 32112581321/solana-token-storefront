@@ -6,6 +6,15 @@ The checked-in starter is the complete Daily Roman Updates reference catalog: ei
 
 The repository also includes `case-study.html`, an interactive and explicitly hypothetical model for a token-only merchandise campaign with a community-directed share of campaign profit. Its figures are adjustable assumptions, not reported results or financial projections.
 
+## Live devnet checkout
+
+The upstream demo is configured with a disposable six-decimal `TEST DRU` mint and receiving wallet on Solana devnet. A 30 TEST DRU smoke payment was executed and verified by the recipient token-account balance change:
+
+- [View the transaction in Solana Explorer](https://explorer.solana.com/tx/3MLUvuYppeqJt4DFC6tY1RXxMyznBRTcjmv2vy5bQfsHr925tKqb4PkWh8oisPfX8E4dJR57kqNUDktejE8kMUWz?cluster=devnet)
+- [`public/devnet-proof.json`](public/devnet-proof.json) records the public mint, recipient, amount, reference, memo, signature, slot, and verified balance delta.
+
+The test mint and test tokens have no monetary value. Local signing keys are generated under the ignored `.devnet/` directory and are never committed. Fork owners should replace the upstream recipient and mint with their own devnet configuration.
+
 > [!IMPORTANT]
 > This repository is an unofficial demonstration. It does not verify payment, create an order, reserve inventory, collect customer information, calculate shipping or tax, or trigger fulfillment. Test-token transfers can still be irreversible. Do not enable it on mainnet without a real order service, server-side settlement verification, replay protection, and merchant review.
 
@@ -84,6 +93,7 @@ The persisted cart contains only a version number plus SKU/quantity pairs. No na
 
 ```sh
 npm run dev              # local Vite development server
+npm run devnet:bootstrap # create a disposable mint and verify a real devnet token transfer
 npm run validate-config  # validate config, catalog, and local images
 npm run typecheck        # strict TypeScript check
 npm test                 # unit tests
