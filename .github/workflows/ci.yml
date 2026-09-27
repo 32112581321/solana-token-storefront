@@ -19,7 +19,9 @@ jobs:
       - run: npm ci
       - run: npm run validate-config
       - run: npm run typecheck
+      - run: npm run inventory:typecheck
       - run: npm test
+      - run: npm run test:inventory
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

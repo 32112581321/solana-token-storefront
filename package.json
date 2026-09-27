@@ -4,12 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run validate-config && npm run typecheck && vite build",
+    "build": "npm run validate-config && npm run typecheck && npm run inventory:build && vite build",
     "devnet:bootstrap": "node scripts/bootstrap-devnet.mjs",
     "dev": "vite --host 127.0.0.1",
+    "inventory:admin": "npm run inventory:build --silent && node --experimental-sqlite .inventory-build/server/cli.js",
+    "inventory:build": "tsc --project server/tsconfig.json",
+    "inventory:serve": "npm run inventory:build --silent && node --experimental-sqlite .inventory-build/server/index.js",
+    "inventory:typecheck": "tsc --project server/tsconfig.json --noEmit",
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run --config vitest.config.ts",
     "test:e2e": "playwright test",
+    "test:inventory": "npm run inventory:build --silent && node --experimental-sqlite --test .inventory-build/server/database.test.js",
     "typecheck": "tsc --noEmit",
     "validate-config": "vitest run tests/config-files.test.ts --config vitest.config.ts --reporter=verbose"
   },

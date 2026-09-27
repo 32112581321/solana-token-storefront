@@ -25,5 +25,9 @@
     "blockedMints": [
       "14kH2osUyEJnqBZ7yFK4pLKJGuPZU4pr1enhi2ZLEmRw"
     ]
+  },
+  "inventory": {
+    "mode": "static",
+    "reservationMinutes": 15
   }
 }

@@ -31,6 +31,17 @@ describe('public configuration validation', () => {
     expect(validateCatalog(validCatalog, 6).errors).toEqual([]);
   });
 
+  it('keeps old static configurations compatible and validates service mode', () => {
+    expect(validateStorefrontConfig(validConfig).errors).toEqual([]);
+    const service = structuredClone(validConfig) as typeof validConfig & {
+      inventory: { mode: string; serviceUrl?: string; reservationMinutes: number };
+    };
+    service.inventory = { mode: 'service', reservationMinutes: 15 };
+    expect(validateStorefrontConfig(service).errors).toContain('inventory.serviceUrl is required in service mode.');
+    service.inventory.serviceUrl = 'http://127.0.0.1:8787';
+    expect(validateStorefrontConfig(service).errors).toEqual([]);
+  });
+
   it('rejects the known blocked mainnet mint', () => {
     const changed = structuredClone(validConfig);
     changed.payment.token.mint = changed.payment.blockedMints[0] ?? '';

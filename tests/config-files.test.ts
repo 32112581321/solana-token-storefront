@@ -25,6 +25,7 @@ describe('checked-in public configuration', () => {
         decimals: 6,
       },
     });
+    expect(configResult.data!.inventory).toEqual({ mode: 'static', reservationMinutes: 15 });
 
     const proof = await readJson(resolve(publicRoot, 'devnet-proof.json')) as Record<string, unknown>;
     expect(proof).toMatchObject({

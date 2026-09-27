@@ -1,5 +1,11 @@
 import QRCode from 'qrcode';
 import './styles.css';
+import {
+  decodeInventorySnapshot,
+  decodeReservationResponse,
+  type InventorySnapshot,
+  type ReservationResponse,
+} from '../shared/inventory-contracts';
 import { formatTokenAmount } from './domain/amount';
 import {
   addCartLine,
@@ -24,6 +30,10 @@ interface AppState {
   catalog: Catalog;
   config: StorefrontConfig;
   intent: PaymentIntent | null;
+  inventory: Map<string, number> | null;
+  reservation: ReservationResponse | null;
+  reservationError: string | null;
+  reservationPending: boolean;
 }
 
 function escapeHtml(value: string): string {
@@ -57,16 +67,24 @@ function renderFatal(errors: string[]): void {
   </main>`;
 }
 
-function renderProductCard(product: Product, symbol: string): string {
-  const variants = product.variants.filter((variant) => variant.available);
+function isServiceMode(config: StorefrontConfig): boolean {
+  return config.inventory?.mode === 'service';
+}
+
+function inventoryLimit(state: AppState, sku: string): number {
+  return state.inventory?.get(sku) ?? (isServiceMode(state.config) ? 0 : Number.POSITIVE_INFINITY);
+}
+
+function renderProductCard(product: Product, symbol: string, inventory: Map<string, number> | null): string {
+  const variants = product.variants.filter((variant) => variant.available && (inventory?.get(variant.sku) ?? 1) > 0);
   const options = variants.map((variant) => `<option value="${escapeHtml(variant.sku)}">
-    ${escapeHtml(displayVariant(product, variant))} — ${escapeHtml(variant.tokenAmount)} ${escapeHtml(symbol)}
+    ${escapeHtml(displayVariant(product, variant))} — ${escapeHtml(variant.tokenAmount)} ${escapeHtml(symbol)}${inventory ? ` · ${inventory.get(variant.sku) ?? 0} left` : ''}
   </option>`).join('');
   const firstVariant = variants[0];
   return `<article class="product-card" data-product-card="${escapeHtml(product.id)}">
     <div class="product-image">
       <img src="${escapeHtml(product.images[0]?.src ?? '')}" alt="${escapeHtml(product.images[0]?.alt ?? product.name)}" loading="lazy">
-      <span class="product-badge">Available</span>
+      <span class="product-badge">${variants.length ? 'Available' : 'Out of stock'}</span>
     </div>
     <div class="product-info">
       <p class="product-kicker">Token-native merchandise</p>
@@ -101,7 +119,7 @@ function renderDraftCard(product: Product): string {
   </article>`;
 }
 
-function renderShell(config: StorefrontConfig, catalog: Catalog): void {
+function renderShell(config: StorefrontConfig, catalog: Catalog, inventory: Map<string, number> | null): void {
   const active = catalog.products.filter((product) => product.status === 'active');
   const drafts = catalog.products.filter((product) => product.status === 'draft');
   const symbol = config.payment.token.symbol;
@@ -142,6 +160,7 @@ function renderShell(config: StorefrontConfig, catalog: Catalog): void {
             <div><dt>Network</dt><dd>Solana devnet</dd></div>
             <div><dt>Pricing</dt><dd>Per SKU</dd></div>
             <div><dt>Checkout</dt><dd>${config.payment.enabled ? 'Configured' : 'Fork owner setup'}</dd></div>
+            <div><dt>Inventory</dt><dd>${isServiceMode(config) ? 'Locally tracked' : 'Static catalog'}</dd></div>
           </dl>
         </aside>
       </section>
@@ -156,7 +175,7 @@ function renderShell(config: StorefrontConfig, catalog: Catalog): void {
           <div><p class="eyebrow">Complete starter catalog</p><h2>Choose your issue.</h2></div>
           <p>Each selection resolves to a concrete variant and token-native price. Nothing here redirects to another storefront.</p>
         </div>
-        <div class="product-grid" data-product-grid>${active.map((product) => renderProductCard(product, symbol)).join('')}</div>
+        <div class="product-grid" data-product-grid>${active.map((product) => renderProductCard(product, symbol, inventory)).join('')}</div>
       </section>
       <section class="draft-section" id="concepts">
         <div class="section-heading">
@@ -212,15 +231,15 @@ function renderCart(state: AppState): void {
           <div class="quantity-control" aria-label="Quantity for ${escapeHtml(line.product.name)}">
             <button type="button" data-decrement="${escapeHtml(line.sku)}" aria-label="Decrease quantity">−</button>
             <span aria-label="Quantity">${line.quantity}</span>
-            <button type="button" data-increment="${escapeHtml(line.sku)}" aria-label="Increase quantity">+</button>
+            <button type="button" data-increment="${escapeHtml(line.sku)}" aria-label="Increase quantity" ${line.quantity >= inventoryLimit(state, line.sku) ? 'disabled' : ''}>+</button>
           </div>
         </div>
         <button class="remove-button" type="button" data-remove="${escapeHtml(line.sku)}">Remove</button>
       </article>`).join('')}</div>
       <div class="cart-summary">
         <div><span>Exact merchandise total</span><strong>${escapeHtml(total)} ${escapeHtml(symbol)}</strong></div>
-        <p>No shipping, tax, order, or fulfillment is created by this template.</p>
-        <button class="button button-primary checkout-button" type="button" data-proceed-checkout>Continue to devnet payment</button>
+        <p>${isServiceMode(state.config) ? 'Stock will be reserved before the payment request is created. No delivery information is collected.' : 'No shipping, tax, order, or fulfillment is created in static mode.'}</p>
+        <button class="button button-primary checkout-button" type="button" data-proceed-checkout ${state.reservationPending ? 'disabled' : ''}>${state.reservationPending ? 'Reserving inventory…' : 'Continue to devnet payment'}</button>
       </div>`;
   }
   void renderCheckout(state);
@@ -253,13 +272,48 @@ async function renderCheckout(state: AppState): Promise<void> {
     return;
   }
 
-  const intent = isPaymentIntentCurrent(state.intent, state.cart)
-    ? state.intent!
-    : createPaymentIntent(state.cart, state.config.payment.memoPrefix);
+  if (isServiceMode(state.config) && state.reservationPending) {
+    container.innerHTML = `${summary}<div class="checkout-notice"><strong>Reserving inventory…</strong><p>The local service is checking stock and creating an expiring order snapshot.</p></div>`;
+    return;
+  }
+  if (isServiceMode(state.config) && state.reservationError) {
+    container.innerHTML = `${summary}<div class="checkout-notice warning"><strong>Inventory reservation failed.</strong><p>${escapeHtml(state.reservationError)}</p><p>Update the cart or try checkout again.</p></div>`;
+    return;
+  }
+  if (isServiceMode(state.config) && !state.reservation) {
+    container.innerHTML = `${summary}<div class="checkout-notice"><strong>Inventory service is ready.</strong><p>Continue from the cart to reserve stock and generate a payment request. No QR is issued before a reservation succeeds.</p></div>`;
+    return;
+  }
+
+  const intent = isServiceMode(state.config)
+    ? {
+      cartFingerprint: cartFingerprint(state.cart),
+      reference: state.reservation!.reference,
+      memo: state.reservation!.memo,
+    }
+    : (isPaymentIntentCurrent(state.intent, state.cart)
+      ? state.intent!
+      : createPaymentIntent(state.cart, state.config.payment.memoPrefix));
   state.intent = intent;
   const fingerprint = cartFingerprint(state.cart);
-  const url = buildSolanaPayUrl(state.config, amount, intent, itemCount);
-  container.innerHTML = `${summary}<div class="checkout-ready"><p>Scan with a compatible wallet or open the wallet link on this device. Confirm that the wallet is connected to <strong>devnet</strong>.</p><div class="qr-frame"><span>Preparing QR…</span></div><div class="checkout-actions"><a class="button button-primary" href="${escapeHtml(url)}" data-wallet-link>Open wallet</a><a class="button button-secondary" href="https://explorer.solana.com/address/${escapeHtml(state.config.payment.token.mint)}?cluster=devnet" target="_blank" rel="noreferrer">Inspect devnet mint</a><a class="button button-secondary" href="./devnet-proof.json" target="_blank" rel="noreferrer" data-devnet-proof>View verified test transfer</a></div><small>Reference: <code>${escapeHtml(intent.reference)}</code></small><div class="checkout-notice warning"><strong>No success state is shown.</strong><p>This static template cannot verify settlement or trigger fulfillment.</p></div></div>`;
+  const reservation = state.reservation;
+  const url = reservation
+    ? `solana:${reservation.recipient}?${new URLSearchParams({
+      amount: reservation.amount,
+      'spl-token': reservation.token.mint,
+      reference: reservation.reference,
+      label: reservation.label,
+      message: reservation.message,
+      memo: reservation.memo,
+    }).toString()}`
+    : buildSolanaPayUrl(state.config, amount, intent, itemCount);
+  const orderDetails = reservation
+    ? `<small>Order: <code>${escapeHtml(reservation.id)}</code> · Reserved until ${escapeHtml(new Date(reservation.expiresAt).toLocaleTimeString())}</small>`
+    : '';
+  const boundary = reservation
+    ? '<div class="checkout-notice warning"><strong>Payment is not automatic fulfillment.</strong><p>The merchant must reconcile the finalized devnet transaction from the local CLI before stock becomes fulfillment-pending.</p></div>'
+    : '<div class="checkout-notice warning"><strong>No success state is shown.</strong><p>This static template cannot verify settlement or trigger fulfillment.</p></div>';
+  container.innerHTML = `${summary}<div class="checkout-ready"><p>Scan with a compatible wallet or open the wallet link on this device. Confirm that the wallet is connected to <strong>devnet</strong>.</p><div class="qr-frame"><span>Preparing QR…</span></div><div class="checkout-actions"><a class="button button-primary" href="${escapeHtml(url)}" data-wallet-link>Open wallet</a><a class="button button-secondary" href="https://explorer.solana.com/address/${escapeHtml(state.config.payment.token.mint)}?cluster=devnet" target="_blank" rel="noreferrer">Inspect devnet mint</a><a class="button button-secondary" href="./devnet-proof.json" target="_blank" rel="noreferrer" data-devnet-proof>View verified test transfer</a></div>${orderDetails}<small>Reference: <code>${escapeHtml(intent.reference)}</code></small>${boundary}</div>`;
 
   try {
     const dataUrl = await QRCode.toDataURL(url, { width: 320, margin: 1, errorCorrectionLevel: 'M', color: { dark: '#120d0b', light: '#fffaf0' } });
@@ -292,9 +346,83 @@ function closeCart(): void {
 }
 
 function persistAndRender(state: AppState): void {
+  const cancelledReservation = state.reservation;
   state.intent = null;
+  state.reservation = null;
+  state.reservationError = null;
+  if (cancelledReservation) void cancelReservation(state, cancelledReservation.id);
   localStorage.setItem(CART_STORAGE_KEY, serializeCart(state.cart));
   renderCart(state);
+}
+
+function inventoryUrl(config: StorefrontConfig, path: string): string {
+  const base = config.inventory?.serviceUrl;
+  if (!base) throw new Error('Inventory service URL is not configured.');
+  return new URL(path.replace(/^\//, ''), `${base.replace(/\/$/, '')}/`).toString();
+}
+
+async function loadInventory(config: StorefrontConfig): Promise<Map<string, number>> {
+  const response = await fetch(inventoryUrl(config, '/v1/inventory'), { cache: 'no-store' });
+  const value = await response.json() as unknown;
+  if (!response.ok) throw new Error(`Inventory service returned HTTP ${response.status}.`);
+  const snapshot: InventorySnapshot = decodeInventorySnapshot(value);
+  return new Map(snapshot.items.map((item) => [item.sku, item.available]));
+}
+
+async function cancelReservation(state: AppState, id: string): Promise<void> {
+  try {
+    await fetch(inventoryUrl(state.config, `/v1/reservations/${encodeURIComponent(id)}`), { method: 'DELETE' });
+  } catch {
+    // The short reservation will expire server-side even if the best-effort release fails.
+  }
+}
+
+function assertReservationMatchesCart(state: AppState, reservation: ReservationResponse): void {
+  const resolved = resolveCart(state.cart, state.catalog, state.config.payment.token.decimals);
+  const expectedLines = [...resolved].sort((a, b) => a.sku.localeCompare(b.sku));
+  const actualLines = [...reservation.lines].sort((a, b) => a.sku.localeCompare(b.sku));
+  if (reservation.status !== 'reserved'
+    || reservation.recipient !== state.config.payment.recipient
+    || reservation.token.mint !== state.config.payment.token.mint
+    || reservation.token.decimals !== state.config.payment.token.decimals
+    || reservation.amountMinorUnits !== cartTotalUnits(resolved).toString()
+    || actualLines.length !== expectedLines.length
+    || actualLines.some((line, index) => line.sku !== expectedLines[index]?.sku || line.quantity !== expectedLines[index]?.quantity)) {
+    throw new Error('Inventory service returned a reservation that does not match this cart.');
+  }
+  if (Date.parse(reservation.expiresAt) <= Date.now()) throw new Error('Inventory service returned an expired reservation.');
+}
+
+async function beginCheckout(state: AppState): Promise<void> {
+  closeCart();
+  document.querySelector('#checkout')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!isServiceMode(state.config)) return;
+  state.reservationPending = true;
+  state.reservationError = null;
+  await renderCheckout(state);
+  renderCart(state);
+  try {
+    const response = await fetch(inventoryUrl(state.config, '/v1/reservations'), {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ schemaVersion: 1, cartVersion: 1, lines: state.cart }),
+    });
+    const value = await response.json() as unknown;
+    if (!response.ok) {
+      const message = value && typeof value === 'object' && 'error' in value && typeof value.error === 'string'
+        ? value.error
+        : `Inventory service returned HTTP ${response.status}.`;
+      throw new Error(message);
+    }
+    const reservation = decodeReservationResponse(value);
+    assertReservationMatchesCart(state, reservation);
+    state.reservation = reservation;
+  } catch (error) {
+    state.reservationError = error instanceof Error ? error.message : 'Inventory reservation failed.';
+  } finally {
+    state.reservationPending = false;
+    renderCart(state);
+  }
 }
 
 function bindInteractions(state: AppState): void {
@@ -314,8 +442,10 @@ function bindInteractions(state: AppState): void {
     if (productButton) {
       const product = state.catalog.products.find((item) => item.id === productButton.dataset.addProduct);
       const select = document.querySelector<HTMLSelectElement>(`[data-variant-select="${CSS.escape(productButton.dataset.addProduct ?? '')}"]`);
-      const variant = product?.variants.find((item) => item.sku === select?.value && item.available);
+      const variant = product?.variants.find((item) => item.sku === select?.value && item.available && inventoryLimit(state, item.sku) > 0);
       if (product && variant && product.status === 'active') {
+        const current = state.cart.find((line) => line.sku === variant.sku)?.quantity ?? 0;
+        if (current >= inventoryLimit(state, variant.sku)) return;
         state.cart = addCartLine(state.cart, variant.sku);
         persistAndRender(state);
         const announcer = document.querySelector<HTMLElement>('[data-announcer]');
@@ -327,7 +457,7 @@ function bindInteractions(state: AppState): void {
     const increment = target.closest<HTMLButtonElement>('[data-increment]');
     if (increment) {
       const line = state.cart.find((item) => item.sku === increment.dataset.increment);
-      if (line) state.cart = setCartQuantity(state.cart, line.sku, line.quantity + 1);
+      if (line && line.quantity < inventoryLimit(state, line.sku)) state.cart = setCartQuantity(state.cart, line.sku, line.quantity + 1);
       persistAndRender(state);
     }
     const decrement = target.closest<HTMLButtonElement>('[data-decrement]');
@@ -344,8 +474,7 @@ function bindInteractions(state: AppState): void {
     if (target.closest('[data-open-cart]')) openCart();
     if (target.closest('[data-close-cart]') || target.matches('[data-drawer-backdrop]')) closeCart();
     if (target.closest('[data-proceed-checkout]')) {
-      closeCart();
-      document.querySelector('#checkout')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      void beginCheckout(state);
     }
   });
 
@@ -371,16 +500,25 @@ async function start(): Promise<void> {
       return;
     }
 
+    const inventory = isServiceMode(configResult.data)
+      ? await loadInventory(configResult.data)
+      : null;
     const state: AppState = {
       cart: readPersistedCart(localStorage.getItem(CART_STORAGE_KEY)),
       catalog: catalogResult.data,
       config: configResult.data,
       intent: null,
+      inventory,
+      reservation: null,
+      reservationError: null,
+      reservationPending: false,
     };
     const validSkus = new Set(state.catalog.products.flatMap((product) => product.variants.map((variant) => variant.sku)));
-    state.cart = state.cart.filter((line) => validSkus.has(line.sku));
+    state.cart = state.cart
+      .filter((line) => validSkus.has(line.sku) && inventoryLimit(state, line.sku) > 0)
+      .map((line) => ({ ...line, quantity: Math.min(line.quantity, inventoryLimit(state, line.sku)) }));
     localStorage.setItem(CART_STORAGE_KEY, serializeCart(state.cart));
-    renderShell(state.config, state.catalog);
+    renderShell(state.config, state.catalog, state.inventory);
     bindInteractions(state);
     renderCart(state);
   } catch (error) {

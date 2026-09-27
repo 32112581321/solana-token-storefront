@@ -1,3 +1,5 @@
+import type { InventoryServiceConfig } from '../../shared/inventory-contracts';
+
 export type ProductStatus = 'active' | 'draft';
 
 export interface StorefrontConfig {
@@ -26,6 +28,7 @@ export interface StorefrontConfig {
     memoPrefix: string;
     blockedMints: string[];
   };
+  inventory?: InventoryServiceConfig;
 }
 
 export interface CatalogImage {

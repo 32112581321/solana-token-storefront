@@ -119,6 +119,7 @@ footer { padding: 2rem 4vw; display: flex; justify-content: space-between; gap: 
 .cart-item strong { font-size: .84rem; }
 .quantity-control { width: fit-content; display: grid; grid-template-columns: 32px 34px 32px; align-items: center; margin-top: .7rem; border: 1px solid var(--line); }
 .quantity-control button { height: 32px; border: 0; background: transparent; cursor: pointer; }
+.quantity-control button:disabled, .checkout-button:disabled { opacity: .4; cursor: not-allowed; }
 .quantity-control span { text-align: center; font-weight: 800; }
 .remove-button { border: 0; padding: 0; background: transparent; color: var(--wine); cursor: pointer; text-decoration: underline; font-size: .76rem; }
 .empty-cart { padding: 4rem 0; text-align: center; }

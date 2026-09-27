@@ -3,5 +3,7 @@ dist/
 playwright-report/
 test-results/
 .devnet/
+.inventory/
+.inventory-build/
 .DS_Store
 *.log

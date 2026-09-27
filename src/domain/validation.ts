@@ -81,6 +81,34 @@ export function validateStorefrontConfig(value: unknown): ValidationResult<Store
     }
   }
 
+  const inventory = value.inventory;
+  if (inventory !== undefined) {
+    if (!isRecord(inventory)) errors.push('inventory must be an object when provided.');
+    else {
+      if (inventory.mode !== 'static' && inventory.mode !== 'service') {
+        errors.push('inventory.mode must be "static" or "service".');
+      }
+      if (inventory.reservationMinutes !== undefined
+        && (!Number.isInteger(inventory.reservationMinutes)
+          || Number(inventory.reservationMinutes) < 1
+          || Number(inventory.reservationMinutes) > 120)) {
+        errors.push('inventory.reservationMinutes must be an integer from 1 through 120.');
+      }
+      if (inventory.mode === 'service') {
+        if (!nonEmptyString(inventory.serviceUrl)) errors.push('inventory.serviceUrl is required in service mode.');
+        else {
+          try {
+            const url = new URL(inventory.serviceUrl);
+            if (url.protocol !== 'http:' && url.protocol !== 'https:') throw new Error('protocol');
+            if (url.username || url.password || url.search || url.hash) throw new Error('components');
+          } catch {
+            errors.push('inventory.serviceUrl must be an absolute HTTP(S) URL without credentials, query, or fragment.');
+          }
+        }
+      }
+    }
+  }
+
   return errors.length ? { data: null, errors } : { data: value as unknown as StorefrontConfig, errors: [] };
 }
 

@@ -82,6 +82,68 @@ test('creates an exact devnet QR and wallet handoff when configured', async ({ p
   await expect(page.getByText('No success state is shown.')).toBeVisible();
 });
 
+test('reserves tracked stock before issuing a service-mode payment request', async ({ page }) => {
+  const serviceConfig = {
+    ...enabledConfig,
+    inventory: { mode: 'service', serviceUrl: 'http://127.0.0.1:8787', reservationMinutes: 15 },
+  };
+  await page.route('**/storefront.config.json', async (route) => {
+    await route.fulfill({ json: serviceConfig });
+  });
+  await page.route('http://127.0.0.1:8787/v1/inventory', async (route) => {
+    await route.fulfill({
+      headers: { 'access-control-allow-origin': '*' },
+      json: {
+        schemaVersion: 1,
+        generatedAt: new Date().toISOString(),
+        items: [{ sku: 'DRU-IST-TANK-S', onHand: 1, reserved: 0, available: 1, revision: 1 }],
+      },
+    });
+  });
+  await page.route('http://127.0.0.1:8787/v1/reservations', async (route) => {
+    expect(route.request().postDataJSON()).toEqual({
+      schemaVersion: 1,
+      cartVersion: 1,
+      lines: [{ sku: 'DRU-IST-TANK-S', quantity: 1 }],
+    });
+    await route.fulfill({
+      status: 201,
+      headers: { 'access-control-allow-origin': '*' },
+      json: {
+        schemaVersion: 1,
+        id: 'eb170def-bd55-4767-b69b-e1caedeb5432',
+        status: 'reserved',
+        createdAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 15 * 60_000).toISOString(),
+        lines: [{ sku: 'DRU-IST-TANK-S', quantity: 1, unitAmountMinor: '30000000' }],
+        amountMinorUnits: '30000000',
+        amount: '30',
+        token: enabledConfig.payment.token,
+        recipient: enabledConfig.payment.recipient,
+        reference: '11111111111111111111111111111111',
+        label: enabledConfig.payment.label,
+        message: '1 item from DRU Supply Office',
+        memo: 'DRU-DEV-111111111111',
+      },
+    });
+  });
+
+  await page.goto('/');
+  await expect(page.getByText('Locally tracked')).toBeVisible();
+  const firstCard = page.locator('[data-product-card]').first();
+  await firstCard.getByRole('button', { name: 'Add to cart' }).click();
+  await expect(page.locator('[data-wallet-link]')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Increase quantity' })).toBeDisabled();
+  await page.getByRole('button', { name: 'Continue to devnet payment' }).click();
+  const walletLink = page.locator('[data-wallet-link]');
+  await expect(walletLink).toBeVisible();
+  const href = await walletLink.getAttribute('href');
+  expect(href).toContain('amount=30');
+  expect(href).toContain('reference=11111111111111111111111111111111');
+  expect(href).toContain('memo=DRU-DEV-111111111111');
+  await expect(page.getByText('Payment is not automatic fulfillment.')).toBeVisible();
+});
+
 test('keeps the shopping flow usable on a phone viewport', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');

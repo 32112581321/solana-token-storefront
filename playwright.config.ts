@@ -6,15 +6,15 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
-    baseURL: 'http://127.0.0.1:4174',
+    baseURL: 'http://127.0.0.1:4176',
     trace: 'on-first-retry',
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
   ],
   webServer: {
-    command: 'npm run dev -- --port 4174',
-    url: 'http://127.0.0.1:4174',
+    command: 'npm run dev -- --port 4176 --strictPort',
+    url: 'http://127.0.0.1:4176',
     reuseExistingServer: !process.env.CI,
   },
 });

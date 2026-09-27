@@ -1,6 +1,6 @@
 # Solana Token Storefront
 
-A forkable, statically hosted commerce template that prices real SKUs in a selected Solana token and hands an exact payment request to a compatible wallet on **devnet**.
+A forkable commerce template that prices real SKUs in a selected Solana token and hands an exact payment request to a compatible wallet on **devnet**. It works as a static catalog by default and includes an opt-in local Node/SQLite inventory sidecar for reservations, orders, settlement reconciliation, and fulfillment status.
 
 The checked-in starter is the complete Daily Roman Updates reference catalog: eight active products plus three original draft concepts. The commerce engine itself is token-agnostic and configured through public JSON files.
 
@@ -16,7 +16,7 @@ The upstream demo is configured with a disposable six-decimal `TEST DRU` mint an
 The test mint and test tokens have no monetary value. Local signing keys are generated under the ignored `.devnet/` directory and are never committed. Fork owners should replace the upstream recipient and mint with their own devnet configuration.
 
 > [!IMPORTANT]
-> This repository is an unofficial demonstration. It does not verify payment, create an order, reserve inventory, collect customer information, calculate shipping or tax, or trigger fulfillment. Test-token transfers can still be irreversible. Do not enable it on mainnet without a real order service, server-side settlement verification, replay protection, and merchant review.
+> This repository is an unofficial demonstration. The published GitHub Pages site runs in `static` inventory mode: it does not verify payment, create an order, reserve inventory, collect customer information, calculate shipping or tax, or trigger fulfillment. The optional local sidecar can reserve inventory and manually reconcile a finalized devnet payment, but it still collects no delivery information and never fulfills automatically. Test-token transfers can be irreversible. Do not enable it on mainnet without a production security, legal, tax, privacy, and operations review.
 
 ## Fork it
 
@@ -46,6 +46,8 @@ The test mint and test tokens have no monetary value. Local signing keys are gen
    ```
 
 Vite prints the local URL, normally `http://127.0.0.1:5173/`.
+
+That is enough for the static version. Nothing needs to be deployed: a fork owner can run the storefront and the optional inventory service entirely from their own computer.
 
 ## Set the receiving address
 
@@ -89,10 +91,73 @@ Token amounts are converted to integer minor units using the configured decimals
 
 The persisted cart contains only a version number plus SKU/quantity pairs. No name, email, shipping address, wallet identity, or other customer information is requested or stored.
 
+## Optional local inventory and orders
+
+The repository includes a deliberately small, Gallery-inspired sidecar: the catalog is the merchant-controlled pricebook, checkout creates an immutable order snapshot, inventory changes are recorded in an event ledger, reservations are atomic and expiring, and a payment signature can be committed only once. It is not required for the static demo.
+
+The service uses Node's built-in SQLite support. Its local database lives at `.inventory/storefront.sqlite`, which is ignored by Git. To try it:
+
+1. Change the public config to service mode:
+
+   ```json
+   "inventory": {
+     "mode": "service",
+     "serviceUrl": "http://127.0.0.1:8787",
+     "reservationMinutes": 15
+   }
+   ```
+
+2. Initialize the ledger and add stock using real SKUs from `public/catalog.json`:
+
+   ```sh
+   npm run inventory:admin -- init
+   npm run inventory:admin -- receive DRU-IST-TANK-S 10 "Opening stock"
+   npm run inventory:admin -- list
+   ```
+
+3. Run the service in one terminal and Vite in another:
+
+   ```sh
+   npm run inventory:serve
+   npm run dev
+   ```
+
+In service mode, the browser fails closed if the inventory service is unavailable. Out-of-stock variants cannot enter the cart. Continuing to checkout atomically reserves stock, stores a canonical price snapshot, and returns an expiring order ID plus the exact Solana Pay request. Changing the cart releases the old reservation; abandoned reservations expire automatically.
+
+After a customer submits the devnet payment, the merchant reconciles the order from their own terminal using the order ID shown at checkout and the devnet transaction signature:
+
+```sh
+npm run inventory:admin -- orders
+npm run inventory:admin -- reconcile ORDER_ID DEVNET_SIGNATURE
+npm run inventory:admin -- fulfill ORDER_ID
+```
+
+Reconciliation fetches the finalized transaction from Solana devnet and requires the exact order reference, memo, token mint, receiving-wallet owner, and recipient token-balance delta. Only then does one SQLite transaction decrement stock and move the order to `fulfillment_pending`. An expired or cancelled order that is nevertheless paid is recorded as an `exception` instead of silently consuming stock. `fulfill` is an explicit merchant action.
+
+This sidecar intentionally has no customer accounts, address form, shipping labels, tax engine, refunds, or automatic payment watcher. For physical merchandise, the merchant must arrange delivery details outside this template and handle exception payments manually.
+
+### Local service settings
+
+The defaults are safe for local development: the API binds to `127.0.0.1:8787`, accepts common local Vite origins, and writes to the ignored `.inventory/` directory.
+
+| Environment variable | Purpose | Default |
+| --- | --- | --- |
+| `STOREFRONT_INVENTORY_PORT` | Local API port | `8787` |
+| `STOREFRONT_DB_PATH` | Durable SQLite file | `.inventory/storefront.sqlite` |
+| `STOREFRONT_ALLOWED_ORIGIN` | Comma-separated browser origins | Local Vite origins |
+| `STOREFRONT_CONFIG_PATH` | Alternate public config path | `public/storefront.config.json` |
+| `STOREFRONT_CATALOG_PATH` | Alternate catalog path | `public/catalog.json` |
+| `SOLANA_RPC_URL` | Solana devnet RPC used by reconciliation | Public devnet endpoint |
+
+Back up the SQLite file before and during a real campaign. Never put it in a public web root, commit it to Git, or expose the merchant CLI through an HTTP route.
+
 ## Commands
 
 ```sh
 npm run dev              # local Vite development server
+npm run inventory:serve  # local inventory/order API on 127.0.0.1:8787
+npm run inventory:admin -- help # merchant inventory/order CLI
+npm run test:inventory   # transactional SQLite ledger tests
 npm run devnet:bootstrap # create a disposable mint and verify a real devnet token transfer
 npm run validate-config  # validate config, catalog, and local images
 npm run typecheck        # strict TypeScript check
@@ -113,7 +178,7 @@ npm ci
 npm run build
 ```
 
-Publish the generated `dist/` directory. The production build uses relative asset paths and requires no serverless functions, environment variables, database, or secrets.
+Publish the generated `dist/` directory. In `static` inventory mode, the production build uses relative asset paths and requires no serverless functions, environment variables, database, or secrets.
 
 | Host | Build command | Output directory | Notes |
 | --- | --- | --- | --- |
@@ -125,11 +190,13 @@ Publish the generated `dist/` directory. The production build uses relative asse
 
 After deployment, verify that `storefront.config.json`, `catalog.json`, and all paths under `images/` are publicly readable from the same site. A receiving address cannot be hidden in a client-side storefront and does not need to be secret.
 
+Service mode is different: GitHub Pages and other static hosts cannot run the Node process or persist SQLite. The fork owner must run the sidecar on a computer they control or deploy it to a persistent Node host, place it behind HTTPS, set `STOREFRONT_ALLOWED_ORIGIN` to the storefront origin, keep the database on durable storage, and point `inventory.serviceUrl` at that API. The repository does not deploy the sidecar automatically.
+
 ## Production boundary
 
-This template ends when it opens the wallet. It deliberately has no “payment complete” control because a static page cannot prove settlement.
+In static mode, this template ends when it opens the wallet. It deliberately has no “payment complete” control because a static page cannot prove settlement.
 
-Before physical goods can be sold, the merchant must add an order service that reserves inventory, collects and protects delivery information, computes tax and shipping, verifies the exact mint/recipient/raw amount/reference at finalized commitment, prevents replay, reconciles uncertain outcomes, and releases fulfillment only after verification.
+The optional sidecar covers stock reservation, canonical order snapshots, exact finalized devnet verification, replay resistance, and a manual fulfillment gate. Before physical goods can be sold to the public, the merchant still needs a protected delivery-information workflow, shipping and tax policy, refunds, monitoring, authentication for any remotely accessible administrative surface, and operational procedures for uncertain or late payments.
 
 ## Attribution and licensing
 
