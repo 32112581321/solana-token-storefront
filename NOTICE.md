@@ -29,4 +29,4 @@ The artwork under `public/images/concepts/` was generated specifically for this 
 
 ## Wallet and dependency notices
 
-Phantom and MetaMask names identify compatible third-party software, not sponsorship or endorsement. Their software and other dependencies retain their own licenses. Vite emits the bundled dependency license texts at `dist/.vite/license.md`; release archives also copy that file to `docs/licenses/bundled-dependencies.md`. The repository's MIT grant does not relicense third-party dependencies.
+Phantom and MetaMask names identify compatible third-party software, not sponsorship or endorsement. Their software and other dependencies retain their own licenses. Vite emits the bundled dependency license texts at `dist/dependency-licenses.txt`, a non-hidden path that GitHub Pages can serve. Release archives also copy the report to `docs/licenses/bundled-dependencies.md` (the devnet.2 archive uses Vite's earlier `.vite/license.md` output internally). The repository's MIT grant does not relicense third-party dependencies.

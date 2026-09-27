@@ -62,7 +62,7 @@ jobs:
           cp releases/STATIC_README.md "$artifact_root/staging/$bundle_name-static/START_HERE.md"
           cp node_modules/qrcode/license "$artifact_root/staging/$bundle_name-static/docs/licenses/qrcode.txt"
           cp node_modules/dijkstrajs/LICENSE.md "$artifact_root/staging/$bundle_name-static/docs/licenses/dijkstrajs.txt"
-          cp dist/.vite/license.md "$artifact_root/staging/$bundle_name-static/docs/licenses/bundled-dependencies.md"
+          cp dist/dependency-licenses.txt "$artifact_root/staging/$bundle_name-static/docs/licenses/bundled-dependencies.md"
           (
             cd "$artifact_root/staging"
             zip -qr "$artifact_root/assets/$bundle_name-static.zip" "$bundle_name-static"

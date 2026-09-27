@@ -7,7 +7,8 @@ const rootDirectory = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   base: './',
   build: {
-    license: true,
+    // GitHub Pages artifact upload excludes dot-directories such as .vite/.
+    license: { fileName: 'dependency-licenses.txt' },
     rollupOptions: {
       input: {
         storefront: resolve(rootDirectory, 'index.html'),
