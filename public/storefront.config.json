@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "storefront": {
+    "name": "DRU Supply Office",
+    "shortName": "DRU",
+    "tagline": "Wear the history. Spend the token.",
+    "description": "A forkable, token-native storefront demonstration for the Daily Roman Updates community.",
+    "disclaimer": "Unofficial demonstration. Not affiliated with or endorsed by Daily Roman Updates or WBS Apparel. No order is created, no payment is verified, and no fulfillment is triggered.",
+    "theme": {
+      "accent": "#6f1717",
+      "background": "#eee6d4"
+    }
+  },
+  "payment": {
+    "enabled": false,
+    "network": "devnet",
+    "recipient": "",
+    "token": {
+      "symbol": "TEST DRU",
+      "mint": "",
+      "decimals": 6
+    },
+    "label": "DRU Supply Office — devnet demonstration",
+    "memoPrefix": "DRU-DEV",
+    "blockedMints": [
+      "14kH2osUyEJnqBZ7yFK4pLKJGuPZU4pr1enhi2ZLEmRw"
+    ]
+  }
+}

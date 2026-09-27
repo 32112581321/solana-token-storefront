@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "products": [
+    {
+      "id": "istanbul-tank",
+      "slug": "make-istanbul-constantinople-again-tank",
+      "name": "Make Istanbul Constantinople Again Tank Top",
+      "description": "White training tank with the campaign's Constantinople graphic.",
+      "status": "active",
+      "images": [{ "src": "./images/products/istanbul-tank.png", "alt": "Make Istanbul Constantinople Again white tank top" }],
+      "optionGroups": [{ "id": "size", "label": "Size", "values": ["S", "M", "L", "XL", "2XL"] }],
+      "variants": [
+        { "sku": "DRU-IST-TANK-S", "options": { "size": "S" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-IST-TANK-M", "options": { "size": "M" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-IST-TANK-L", "options": { "size": "L" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-IST-TANK-XL", "options": { "size": "XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-IST-TANK-2XL", "options": { "size": "2XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true }
+      ]
+    },
+    {
+      "id": "sun-tank",
+      "slug": "unconquered-sun-tank",
+      "name": "Unconquered Sun Tank Top",
+      "description": "White training tank featuring the Unconquered Sun design.",
+      "status": "active",
+      "images": [{ "src": "./images/products/sun-tank.png", "alt": "Unconquered Sun white tank top" }],
+      "optionGroups": [{ "id": "size", "label": "Size", "values": ["S", "M", "L", "XL", "2XL"] }],
+      "variants": [
+        { "sku": "DRU-SUN-TANK-S", "options": { "size": "S" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-SUN-TANK-M", "options": { "size": "M" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-SUN-TANK-L", "options": { "size": "L" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-SUN-TANK-XL", "options": { "size": "XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-SUN-TANK-2XL", "options": { "size": "2XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true }
+      ]
+    },
+    {
+      "id": "carthago-mug",
+      "slug": "carthago-delenda-est-mug",
+      "name": "Carthago Delenda Est Mug",
+      "description": "Black ceramic mug bearing the enduring Carthago Delenda Est refrain.",
+      "status": "active",
+      "images": [{ "src": "./images/products/carthago-mug.png", "alt": "Carthago Delenda Est black mug" }],
+      "optionGroups": [{ "id": "capacity", "label": "Capacity", "values": ["11 oz", "15 oz"] }],
+      "variants": [
+        { "sku": "DRU-CARTHAGO-11", "options": { "capacity": "11 oz" }, "tokenAmount": "20", "displayPrice": "$20 reference", "available": true },
+        { "sku": "DRU-CARTHAGO-15", "options": { "capacity": "15 oz" }, "tokenAmount": "25", "displayPrice": "$25 reference", "available": true }
+      ]
+    },
+    {
+      "id": "hail-caesar",
+      "slug": "hail-caesar",
+      "name": "Hail Caesar",
+      "description": "Black tee with a classical bust and the Hail Caesar treatment.",
+      "status": "active",
+      "images": [{ "src": "./images/products/hail-caesar.png", "alt": "Hail Caesar black T-shirt" }],
+      "optionGroups": [{ "id": "size", "label": "Size", "values": ["S", "M", "L", "XL", "2XL"] }],
+      "variants": [
+        { "sku": "DRU-HAIL-S", "options": { "size": "S" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-HAIL-M", "options": { "size": "M" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-HAIL-L", "options": { "size": "L" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-HAIL-XL", "options": { "size": "XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-HAIL-2XL", "options": { "size": "2XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true }
+      ]
+    },
+    {
+      "id": "gaindrian",
+      "slug": "gaindrian",
+      "name": "Gaindrian",
+      "description": "White training tank made for the gains of the empire.",
+      "status": "active",
+      "images": [{ "src": "./images/products/gaindrian.jpg", "alt": "Gaindrian white tank top" }],
+      "optionGroups": [{ "id": "size", "label": "Size", "values": ["S", "M", "L", "XL", "2XL"] }],
+      "variants": [
+        { "sku": "DRU-GAIN-S", "options": { "size": "S" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-GAIN-M", "options": { "size": "M" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-GAIN-L", "options": { "size": "L" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-GAIN-XL", "options": { "size": "XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-GAIN-2XL", "options": { "size": "2XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true }
+      ]
+    },
+    {
+      "id": "pectorian",
+      "slug": "pectorian-guard",
+      "name": "Pectorian Guard",
+      "description": "White training tank for those guarding chest day.",
+      "status": "active",
+      "images": [{ "src": "./images/products/pectorian.jpg", "alt": "Pectorian Guard white tank top" }],
+      "optionGroups": [{ "id": "size", "label": "Size", "values": ["S", "M", "L", "XL", "2XL"] }],
+      "variants": [
+        { "sku": "DRU-PECT-S", "options": { "size": "S" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-PECT-M", "options": { "size": "M" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-PECT-L", "options": { "size": "L" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-PECT-XL", "options": { "size": "XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-PECT-2XL", "options": { "size": "2XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true }
+      ]
+    },
+    {
+      "id": "sun-shirt",
+      "slug": "unconquered-sun-shirt",
+      "name": "Unconquered Sun",
+      "description": "Black tee with the Unconquered Sun emblem.",
+      "status": "active",
+      "images": [{ "src": "./images/products/sun-shirt.jpg", "alt": "Unconquered Sun black T-shirt" }],
+      "optionGroups": [{ "id": "size", "label": "Size", "values": ["S", "M", "L", "XL", "2XL"] }],
+      "variants": [
+        { "sku": "DRU-SUN-TEE-S", "options": { "size": "S" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-SUN-TEE-M", "options": { "size": "M" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-SUN-TEE-L", "options": { "size": "L" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-SUN-TEE-XL", "options": { "size": "XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-SUN-TEE-2XL", "options": { "size": "2XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true }
+      ]
+    },
+    {
+      "id": "istanbul-shirt",
+      "slug": "make-istanbul-constantinople-again-shirt",
+      "name": "Make Istanbul Constantinople Again",
+      "description": "Black tee with the Constantinople campaign graphic.",
+      "status": "active",
+      "images": [{ "src": "./images/products/istanbul-shirt.jpg", "alt": "Make Istanbul Constantinople Again black T-shirt" }],
+      "optionGroups": [{ "id": "size", "label": "Size", "values": ["S", "M", "L", "XL", "2XL"] }],
+      "variants": [
+        { "sku": "DRU-IST-TEE-S", "options": { "size": "S" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-IST-TEE-M", "options": { "size": "M" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-IST-TEE-L", "options": { "size": "L" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-IST-TEE-XL", "options": { "size": "XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true },
+        { "sku": "DRU-IST-TEE-2XL", "options": { "size": "2XL" }, "tokenAmount": "30", "displayPrice": "$30 reference", "available": true }
+      ]
+    },
+    {
+      "id": "sol-invictus-concept",
+      "slug": "sol-invictus-heavyweight-tee",
+      "name": "Sol Invictus Heavyweight Tee",
+      "description": "Original proposal artwork for a possible token-native future release.",
+      "status": "draft",
+      "images": [{ "src": "./images/concepts/sol-invictus-tee.png", "alt": "Concept black Sol Invictus heavyweight T-shirt" }],
+      "optionGroups": [],
+      "variants": []
+    },
+    {
+      "id": "column-tank-concept",
+      "slug": "column-training-tank",
+      "name": "The Column Training Tank",
+      "description": "Original proposal artwork for a possible token-native future release.",
+      "status": "draft",
+      "images": [{ "src": "./images/concepts/column-tank.png", "alt": "Concept bone-white Roman column training tank" }],
+      "optionGroups": [],
+      "variants": []
+    },
+    {
+      "id": "aureus-mug-concept",
+      "slug": "aureus-relief-mug",
+      "name": "Aureus Relief Mug",
+      "description": "Original proposal artwork for a possible token-native future release.",
+      "status": "draft",
+      "images": [{ "src": "./images/concepts/aureus-mug.png", "alt": "Concept matte black Aureus relief mug" }],
+      "optionGroups": [],
+      "variants": []
+    }
+  ]
+}
