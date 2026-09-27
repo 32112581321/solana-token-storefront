@@ -1,10 +1,10 @@
 {
   "name": "solana-token-storefront",
-  "version": "1.0.0-devnet.2",
+  "version": "1.0.0-devnet.3",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run validate-config && npm run typecheck && npm run inventory:build && vite build",
+    "build": "npm run validate-config && npm run validate-roadmap && npm run typecheck && npm run inventory:build && vite build",
     "devnet:bootstrap": "node scripts/bootstrap-devnet.mjs",
     "devnet:fund": "node scripts/fund-devnet-wallet.mjs",
     "dev": "vite --host 127.0.0.1",
@@ -13,11 +13,13 @@
     "inventory:serve": "npm run inventory:build --silent && node --experimental-sqlite .inventory-build/server/index.js",
     "inventory:typecheck": "tsc --project server/tsconfig.json --noEmit",
     "preview": "vite preview --host 127.0.0.1",
+    "roadmap:export": "node --experimental-strip-types scripts/roadmap.ts --write",
     "test": "vitest run --config vitest.config.ts",
     "test:e2e": "playwright test",
     "test:inventory": "npm run inventory:build --silent && node --experimental-sqlite --test .inventory-build/server/database.test.js",
     "typecheck": "tsc --noEmit",
-    "validate-config": "vitest run tests/config-files.test.ts --config vitest.config.ts --reporter=verbose"
+    "validate-config": "vitest run tests/config-files.test.ts --config vitest.config.ts --reporter=verbose",
+    "validate-roadmap": "node --experimental-strip-types scripts/roadmap.ts"
   },
   "dependencies": {
     "@metamask/connect-multichain": "1.2.0",

@@ -58,6 +58,7 @@ jobs:
           git archive --format=zip --prefix="$bundle_name/" --output="$artifact_root/assets/$bundle_name-source.zip" HEAD
           cp -R dist/. "$artifact_root/staging/$bundle_name-static/"
           cp README.md USER_MANUAL.md COMMUNITY_PROPOSAL.md LICENSE.md NOTICE.md "$artifact_root/staging/$bundle_name-static/docs/"
+          cp docs/SETTLEMENT_VAULT_PROPOSAL.md docs/ROADMAP.md "$artifact_root/staging/$bundle_name-static/docs/"
           cp "releases/$RELEASE_TAG.md" "$artifact_root/staging/$bundle_name-static/docs/RELEASE_NOTES.md"
           cp releases/STATIC_README.md "$artifact_root/staging/$bundle_name-static/START_HERE.md"
           cp node_modules/qrcode/license "$artifact_root/staging/$bundle_name-static/docs/licenses/qrcode.txt"
@@ -90,8 +91,8 @@ jobs:
               throw new Error(`Unexpected private or unsafe path in ${kind} archive.`);
             }
             const expected = kind === 'source'
-              ? ['package.json', 'package-lock.json', 'src/main.ts', 'server/cli.ts', 'USER_MANUAL.md', 'COMMUNITY_PROPOSAL.md', 'LICENSE.md', 'NOTICE.md']
-              : ['index.html', 'catalog.json', 'storefront.config.json', 'START_HERE.md', 'docs/USER_MANUAL.md', 'docs/COMMUNITY_PROPOSAL.md', 'docs/LICENSE.md', 'docs/NOTICE.md'];
+              ? ['package.json', 'package-lock.json', 'src/main.ts', 'server/cli.ts', 'USER_MANUAL.md', 'COMMUNITY_PROPOSAL.md', 'docs/SETTLEMENT_VAULT_PROPOSAL.md', 'docs/ROADMAP.md', 'public/roadmap/graph.json', 'public/roadmap/create-requests.json', 'LICENSE.md', 'NOTICE.md']
+              : ['index.html', 'roadmap.html', 'roadmap/graph.json', 'roadmap/create-requests.json', 'catalog.json', 'storefront.config.json', 'START_HERE.md', 'docs/USER_MANUAL.md', 'docs/COMMUNITY_PROPOSAL.md', 'docs/SETTLEMENT_VAULT_PROPOSAL.md', 'docs/ROADMAP.md', 'docs/LICENSE.md', 'docs/NOTICE.md'];
             for (const file of expected) {
               if (!entries.includes(`${prefix}${file}`)) throw new Error(`Missing ${file} in ${kind} archive.`);
             }

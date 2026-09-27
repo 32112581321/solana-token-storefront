@@ -1,0 +1,811 @@
+{
+  "schema": "solana-token-storefront.roadmap.v1",
+  "authority": "repository-planning",
+  "syncState": "not-imported",
+  "updatedAt": "2026-09-27",
+  "title": "From useful demo to responsible commerce",
+  "disclaimer": "Independent community contribution. Devnet software is available; merchant settlement, vault deposits, contributor rewards and treasury actions are proposals only. No funds requested, guaranteed returns, approvals or launch dates.",
+  "ontology": {
+    "version": "0.6.0",
+    "bundleDigest": "11d670a57b2052b4de00509559d081b524bf953c6da2544a25f33976857f8f4f",
+    "canonicalBaseUrl": "https://zenith-research.ca/ontology/v0.6.0"
+  },
+  "arena": {
+    "kind": "Arena",
+    "id": "sts-commerce-arena",
+    "title": "Solana Token Storefront",
+    "description": "Continuing stewardship of the forkable devnet storefront and review of responsible community commerce proposals. Repository-defined Arena; not provisioned in a private Devgraph host."
+  },
+  "stages": [
+    {
+      "id": "foundation",
+      "title": "01 / Prove the devnet experience",
+      "summary": "Keep the demo forkable and close the gap between automated wallet tests and real extension approvals."
+    },
+    {
+      "id": "merchant",
+      "title": "02 / Connect a willing merchant",
+      "summary": "Real products, real obligations, explicit permission. Staging orders before any production fulfillment."
+    },
+    {
+      "id": "reserve",
+      "title": "03 / Model settlement working capital",
+      "summary": "Compare reserve and conversion policies with mock assets before building a money-handling system."
+    },
+    {
+      "id": "contributors",
+      "title": "04 / Define contributor protection",
+      "summary": "Earned fees, honest valuation, bounded losses, and fair exits. No deposits are accepted."
+    },
+    {
+      "id": "pilot",
+      "title": "05 / Earn the right to run a pilot",
+      "summary": "Operator-funded rehearsal first. Public capital and community treasury actions require separate approval."
+    }
+  ],
+  "work": [
+    {
+      "id": "sts-settlement-proposal",
+      "kind": "Proposal",
+      "title": "Community-funded settlement: proposal for review",
+      "description": "Explore token-native merchandise, a USDC reserve, earned contributor incentives, and a creator-approved community profit budget. No fundraising or launch approval is implied.",
+      "status": "draft",
+      "plan": {
+        "stage": "reserve",
+        "delivery": "planned",
+        "acceptance": [
+          "Creator, merchant, contributors and reviewers explicitly agree scope before any capital collection."
+        ],
+        "evidence": [
+          "docs/SETTLEMENT_VAULT_PROPOSAL.md",
+          "COMMUNITY_PROPOSAL.md"
+        ]
+      }
+    },
+    {
+      "id": "sts-commerce-initiative",
+      "kind": "Initiative",
+      "title": "Community token commerce",
+      "description": "An independent contribution: a useful checkout today and a reviewable path toward authorized merchant settlement.",
+      "status": "draft",
+      "plan": {
+        "stage": "foundation",
+        "delivery": "planned",
+        "acceptance": [
+          "Prove usable commerce and reconcile obligations without promises of token appreciation."
+        ],
+        "evidence": [
+          "README.md"
+        ]
+      }
+    },
+    {
+      "id": "sts-foundation-project",
+      "kind": "Project",
+      "title": "Devnet foundation",
+      "description": "Keep the demo forkable and close the gap between automated wallet tests and real extension approvals.",
+      "status": "draft",
+      "plan": {
+        "stage": "foundation",
+        "delivery": "next",
+        "acceptance": [
+          "Complete the child acceptance checks; retain explicit safety gates."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-foundation-issue",
+      "kind": "Issue",
+      "title": "Devnet foundation acceptance",
+      "description": "Keep the demo forkable and close the gap between automated wallet tests and real extension approvals.",
+      "status": "draft",
+      "plan": {
+        "stage": "foundation",
+        "delivery": "next",
+        "acceptance": [
+          "Review child evidence before claiming this delivery scope complete."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-merchant-project",
+      "kind": "Project",
+      "title": "Authorized merchant connector",
+      "description": "Real products, real obligations, explicit permission. Staging orders before any production fulfillment.",
+      "status": "draft",
+      "plan": {
+        "stage": "merchant",
+        "delivery": "planned",
+        "acceptance": [
+          "Complete the child acceptance checks; retain explicit safety gates."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-merchant-issue",
+      "kind": "Issue",
+      "title": "Authorized merchant connector acceptance",
+      "description": "Real products, real obligations, explicit permission. Staging orders before any production fulfillment.",
+      "status": "draft",
+      "plan": {
+        "stage": "merchant",
+        "delivery": "planned",
+        "acceptance": [
+          "Review child evidence before claiming this delivery scope complete."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-reserve-project",
+      "kind": "Project",
+      "title": "Settlement reserve research",
+      "description": "Compare reserve and conversion policies with mock assets before building a money-handling system.",
+      "status": "draft",
+      "plan": {
+        "stage": "reserve",
+        "delivery": "planned",
+        "acceptance": [
+          "Complete the child acceptance checks; retain explicit safety gates."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-reserve-issue",
+      "kind": "Issue",
+      "title": "Settlement reserve research acceptance",
+      "description": "Compare reserve and conversion policies with mock assets before building a money-handling system.",
+      "status": "draft",
+      "plan": {
+        "stage": "reserve",
+        "delivery": "planned",
+        "acceptance": [
+          "Review child evidence before claiming this delivery scope complete."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-contributors-project",
+      "kind": "Project",
+      "title": "Contributor terms and controls",
+      "description": "Earned fees, honest valuation, bounded losses, and fair exits. No deposits are accepted.",
+      "status": "draft",
+      "plan": {
+        "stage": "contributors",
+        "delivery": "planned",
+        "acceptance": [
+          "Complete the child acceptance checks; retain explicit safety gates."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-contributors-issue",
+      "kind": "Issue",
+      "title": "Contributor terms and controls acceptance",
+      "description": "Earned fees, honest valuation, bounded losses, and fair exits. No deposits are accepted.",
+      "status": "draft",
+      "plan": {
+        "stage": "contributors",
+        "delivery": "planned",
+        "acceptance": [
+          "Review child evidence before claiming this delivery scope complete."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-pilot-project",
+      "kind": "Project",
+      "title": "Capped pilot and governance",
+      "description": "Operator-funded rehearsal first. Public capital and community treasury actions require separate approval.",
+      "status": "draft",
+      "plan": {
+        "stage": "pilot",
+        "delivery": "planned",
+        "acceptance": [
+          "Complete the child acceptance checks; retain explicit safety gates."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-pilot-issue",
+      "kind": "Issue",
+      "title": "Capped pilot and governance acceptance",
+      "description": "Operator-funded rehearsal first. Public capital and community treasury actions require separate approval.",
+      "status": "draft",
+      "plan": {
+        "stage": "pilot",
+        "delivery": "planned",
+        "acceptance": [
+          "Review child evidence before claiming this delivery scope complete."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-storefront",
+      "kind": "Task",
+      "title": "Forkable storefront and exact-token cart",
+      "description": "Eight active reference products, local artwork, variants, persistent cart, exact amounts and devnet-only payment configuration.",
+      "status": "draft",
+      "plan": {
+        "stage": "foundation",
+        "delivery": "implemented",
+        "acceptance": [
+          "Cart and amount tests pass; mainnet reference mint remains blocked."
+        ],
+        "evidence": [
+          "src/main.ts",
+          "tests/cart.test.ts",
+          "tests/amount.test.ts",
+          "tests/validation.test.ts"
+        ]
+      }
+    },
+    {
+      "id": "sts-wallet-code",
+      "kind": "Task",
+      "title": "Phantom and MetaMask integration",
+      "description": "Desktop wallet connection and devnet transaction construction are implemented. Automated mocks and a developer-signed chain test are not installed-extension acceptance.",
+      "status": "draft",
+      "plan": {
+        "stage": "foundation",
+        "delivery": "implemented",
+        "acceptance": [
+          "Validate network, mint, amount, simulation and signed transaction; show submission rather than a paid-order claim."
+        ],
+        "evidence": [
+          "e2e/wallets.spec.ts",
+          "tests/transaction.test.ts",
+          "tests/devnet-wallet-live.test.ts"
+        ]
+      }
+    },
+    {
+      "id": "sts-inventory",
+      "kind": "Task",
+      "title": "Local inventory and reconciliation",
+      "description": "Optional localhost stock, reservations, order snapshots and manual devnet reconciliation. No public production service or real fulfillment.",
+      "status": "draft",
+      "plan": {
+        "stage": "foundation",
+        "delivery": "implemented",
+        "acceptance": [
+          "Exercise stock reservation, expiry and reconciliation with isolated local tests."
+        ],
+        "evidence": [
+          "server/database.test.ts",
+          "server/cli.ts",
+          "USER_MANUAL.md"
+        ]
+      }
+    },
+    {
+      "id": "sts-wallet-rehearsal",
+      "kind": "Task",
+      "title": "Rehearse both real wallet extensions",
+      "description": "Test installed Phantom and MetaMask desktop extensions with disposable devnet accounts; record versions and sanitized receipts.",
+      "status": "draft",
+      "plan": {
+        "stage": "foundation",
+        "delivery": "next",
+        "acceptance": [
+          "Approve, reject, disconnect and retry safely in each extension; exercise wrong-network and insufficient-funds cases.",
+          "No private keys or customer data in public evidence."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-merchant-consent",
+      "kind": "Task",
+      "title": "Agree the merchant relationship",
+      "description": "Confirm rights, merchant of record, store-operator API authority, settlement asset and refund/support responsibilities. No consent is inferred from a public catalog.",
+      "status": "draft",
+      "plan": {
+        "stage": "merchant",
+        "delivery": "gated",
+        "acceptance": [
+          "Written rights and operating agreement; staging access authorized.",
+          "Confirm whether USDC is accepted or an approved fiat rail is required."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-product-mapping",
+      "kind": "Task",
+      "title": "Map SKUs to merchant products",
+      "description": "Create an authorized staging adapter with product/variation mappings and authoritative stock, shipping, tax and landed cost.",
+      "status": "draft",
+      "plan": {
+        "stage": "merchant",
+        "delivery": "planned",
+        "acceptance": [
+          "All active variant mappings verified; missing or stale products fail closed.",
+          "No production orders or customer information in test fixtures."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-order-orchestration",
+      "kind": "Task",
+      "title": "Verify payment before merchant fulfillment",
+      "description": "Correlate quote, hold, reference, payment and merchant order; verify finality, prevent replay and make payout/order retries idempotent.",
+      "status": "draft",
+      "plan": {
+        "stage": "merchant",
+        "delivery": "planned",
+        "acceptance": [
+          "Test duplicate, partial, late and unknown payments without duplicate payouts or shipments.",
+          "Only verified agreed-rail payment can advance a staging merchant order; setting paid does not itself transfer money."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-refunds-privacy",
+      "kind": "Task",
+      "title": "Secure refunds and customer data",
+      "description": "Define refund currency and costs; protect shipping data and credentials in a private authenticated service.",
+      "status": "draft",
+      "plan": {
+        "stage": "merchant",
+        "delivery": "planned",
+        "acceptance": [
+          "Test cancellations, expired holds, refund failures and merchant outages.",
+          "Document consent, access, retention and deletion; never put personal data on chain."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-reserve-simulator",
+      "kind": "Task",
+      "title": "Simulate reserve and conversion policies",
+      "description": "Compare per-order swaps, periodic batching and threshold replenishment with mock prices, liquidity and demand. No live fund collection.",
+      "status": "draft",
+      "plan": {
+        "stage": "reserve",
+        "delivery": "next",
+        "acceptance": [
+          "Stress price collapse, missing routes, USDC impairment, refund spikes and simultaneous withdrawals.",
+          "Report minimum liquidity, unmet obligations, swap costs, DRU sold and capital-time; do not optimize swap count alone."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-reserve-controller",
+      "kind": "Task",
+      "title": "Build a bounded devnet reserve controller",
+      "description": "Protect committed payouts and buffers; cap DRU exposure and holding duration; use executable quotes, hysteresis and atomic admission checks.",
+      "status": "draft",
+      "plan": {
+        "stage": "reserve",
+        "delivery": "planned",
+        "acceptance": [
+          "Concurrent quotes cannot double-commit USDC; unavailable liquidity pauses new obligations.",
+          "No DRU holdings or in-flight funds treated as spendable USDC; integer accounting throughout."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-settlement-ledger",
+      "kind": "Task",
+      "title": "Reconcile reserve, chain and merchant ledgers",
+      "description": "Separate settled assets, in-flight payouts, customer liabilities, capital, earnings and community budgets.",
+      "status": "draft",
+      "plan": {
+        "stage": "reserve",
+        "delivery": "planned",
+        "acceptance": [
+          "Idempotent reconciliation survives restart, reorg/finality delays and provider timeouts.",
+          "Deposits are never revenue; losses are recorded before distributions."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-cross-chain",
+      "kind": "Task",
+      "title": "Optional cross-chain settlement decision",
+      "description": "Use same-chain USDC first. Evaluate CCTP only if an approved merchant rail needs another chain; it is not a fiat off-ramp.",
+      "status": "draft",
+      "plan": {
+        "stage": "reserve",
+        "delivery": "gated",
+        "acceptance": [
+          "Document a real cross-chain requirement before implementation.",
+          "Test burn/attestation/mint recovery and no double counting; otherwise leave this branch deferred."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-contributor-terms",
+      "kind": "Task",
+      "title": "Define capital rights and earned incentives",
+      "description": "Agree a fee or creator-margin source, eligibility, conservative valuation, loss waterfall, funded first-loss capacity, caps and fair withdrawal terms.",
+      "status": "draft",
+      "plan": {
+        "stage": "contributors",
+        "delivery": "gated",
+        "acceptance": [
+          "Qualified review of custody, contributor rights, jurisdiction, disclosures and tax obligations.",
+          "No promised APY, guaranteed principal, new-deposit-funded rewards or implied token-holder redemption rights."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-fee-accounting",
+      "kind": "Task",
+      "title": "Prototype fee and capital-time accounting",
+      "description": "Allocate only realized distributable net fees after losses, obligations and required reserves; keep community profit separate.",
+      "status": "draft",
+      "plan": {
+        "stage": "contributors",
+        "delivery": "planned",
+        "acceptance": [
+          "Zero safely distributable fees means zero rewards; rounding and boundary deposits tested.",
+          "Settlement fees deducted once before the campaign community-profit calculation."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-withdrawal-queue",
+      "kind": "Task",
+      "title": "Test fair exits and impairment handling",
+      "description": "Simulate queued exits, notice periods, liquidity constraints and net-asset write-downs without offloading losses to remaining contributors.",
+      "status": "draft",
+      "plan": {
+        "stage": "contributors",
+        "delivery": "planned",
+        "acceptance": [
+          "Run a mass-exit scenario alongside merchant/refund obligations.",
+          "Define share pricing, queue order, emergency gates and buffer exhaustion behavior."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-security-review",
+      "kind": "Task",
+      "title": "Review custody and production controls",
+      "description": "Threat-model signer authority, quote manipulation, mint controls, upgrades and outages; remediate findings and obtain independent review.",
+      "status": "draft",
+      "plan": {
+        "stage": "contributors",
+        "delivery": "gated",
+        "acceptance": [
+          "Document multisig/timelocks and funded loss-buffer ownership if chosen.",
+          "Authentication, rate limits, monitoring, backups, emergency pause and recovery tested; no claim that CI is an audit."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-operator-pilot",
+      "kind": "Task",
+      "title": "Run a capped operator-funded staging rehearsal",
+      "description": "After prerequisite evidence, exercise merchant staging orders and mock devnet settlement with no community funds or real shipments.",
+      "status": "draft",
+      "plan": {
+        "stage": "pilot",
+        "delivery": "gated",
+        "acceptance": [
+          "Predeclare caps, stop conditions, operators and escalation; reconcile all test obligations and exceptions.",
+          "Publish sanitized results and remaining limitations before proposing any live pilot."
+        ],
+        "evidence": []
+      }
+    },
+    {
+      "id": "sts-profit-governance",
+      "kind": "Task",
+      "title": "Agree community profit governance",
+      "description": "Ask the creator to approve a percentage of positive distributable profit; define eligibility, quorum, conflicts, signers and execution evidence.",
+      "status": "draft",
+      "plan": {
+        "stage": "pilot",
+        "delivery": "planned",
+        "acceptance": [
+          "Never spend customer obligations or contributor principal on a vote or burn.",
+          "Distinguish direct burns from buybacks and publish actual receipts, not promised price effects."
+        ],
+        "evidence": [
+          "COMMUNITY_PROPOSAL.md"
+        ]
+      }
+    },
+    {
+      "id": "sts-live-launch-decision",
+      "kind": "Task",
+      "title": "Separate approval for real funds and orders",
+      "description": "A mainnet implementation and capped real campaign require new authorization after legal, security, merchant and operational gates. Community deposits are a later, separate decision.",
+      "status": "draft",
+      "plan": {
+        "stage": "pilot",
+        "delivery": "gated",
+        "acceptance": [
+          "Explicit launch decision names accountable people, limits, customer terms and evidence.",
+          "No deposit button, mainnet vault or public fundraising until all applicable gates are met."
+        ],
+        "evidence": []
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "sts-commerce-arena",
+      "relation": "CONTAINS_WORK",
+      "to": "sts-commerce-initiative"
+    },
+    {
+      "from": "sts-commerce-initiative",
+      "relation": "HAS_CHILD",
+      "to": "sts-foundation-project"
+    },
+    {
+      "from": "sts-foundation-project",
+      "relation": "HAS_CHILD",
+      "to": "sts-foundation-issue"
+    },
+    {
+      "from": "sts-commerce-initiative",
+      "relation": "HAS_CHILD",
+      "to": "sts-merchant-project"
+    },
+    {
+      "from": "sts-merchant-project",
+      "relation": "HAS_CHILD",
+      "to": "sts-merchant-issue"
+    },
+    {
+      "from": "sts-commerce-initiative",
+      "relation": "HAS_CHILD",
+      "to": "sts-reserve-project"
+    },
+    {
+      "from": "sts-reserve-project",
+      "relation": "HAS_CHILD",
+      "to": "sts-reserve-issue"
+    },
+    {
+      "from": "sts-commerce-initiative",
+      "relation": "HAS_CHILD",
+      "to": "sts-contributors-project"
+    },
+    {
+      "from": "sts-contributors-project",
+      "relation": "HAS_CHILD",
+      "to": "sts-contributors-issue"
+    },
+    {
+      "from": "sts-commerce-initiative",
+      "relation": "HAS_CHILD",
+      "to": "sts-pilot-project"
+    },
+    {
+      "from": "sts-pilot-project",
+      "relation": "HAS_CHILD",
+      "to": "sts-pilot-issue"
+    },
+    {
+      "from": "sts-foundation-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-storefront"
+    },
+    {
+      "from": "sts-foundation-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-wallet-code"
+    },
+    {
+      "from": "sts-foundation-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-inventory"
+    },
+    {
+      "from": "sts-foundation-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-wallet-rehearsal"
+    },
+    {
+      "from": "sts-merchant-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-merchant-consent"
+    },
+    {
+      "from": "sts-merchant-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-product-mapping"
+    },
+    {
+      "from": "sts-merchant-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-order-orchestration"
+    },
+    {
+      "from": "sts-merchant-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-refunds-privacy"
+    },
+    {
+      "from": "sts-reserve-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-reserve-simulator"
+    },
+    {
+      "from": "sts-reserve-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-reserve-controller"
+    },
+    {
+      "from": "sts-reserve-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-settlement-ledger"
+    },
+    {
+      "from": "sts-reserve-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-cross-chain"
+    },
+    {
+      "from": "sts-contributors-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-contributor-terms"
+    },
+    {
+      "from": "sts-contributors-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-fee-accounting"
+    },
+    {
+      "from": "sts-contributors-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-withdrawal-queue"
+    },
+    {
+      "from": "sts-contributors-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-security-review"
+    },
+    {
+      "from": "sts-pilot-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-operator-pilot"
+    },
+    {
+      "from": "sts-pilot-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-profit-governance"
+    },
+    {
+      "from": "sts-pilot-issue",
+      "relation": "HAS_CHILD",
+      "to": "sts-live-launch-decision"
+    },
+    {
+      "from": "sts-wallet-rehearsal",
+      "relation": "DEPENDS_ON",
+      "to": "sts-wallet-code"
+    },
+    {
+      "from": "sts-product-mapping",
+      "relation": "DEPENDS_ON",
+      "to": "sts-merchant-consent"
+    },
+    {
+      "from": "sts-order-orchestration",
+      "relation": "DEPENDS_ON",
+      "to": "sts-product-mapping"
+    },
+    {
+      "from": "sts-order-orchestration",
+      "relation": "DEPENDS_ON",
+      "to": "sts-refunds-privacy"
+    },
+    {
+      "from": "sts-reserve-controller",
+      "relation": "DEPENDS_ON",
+      "to": "sts-reserve-simulator"
+    },
+    {
+      "from": "sts-settlement-ledger",
+      "relation": "DEPENDS_ON",
+      "to": "sts-reserve-controller"
+    },
+    {
+      "from": "sts-fee-accounting",
+      "relation": "DEPENDS_ON",
+      "to": "sts-contributor-terms"
+    },
+    {
+      "from": "sts-fee-accounting",
+      "relation": "DEPENDS_ON",
+      "to": "sts-settlement-ledger"
+    },
+    {
+      "from": "sts-withdrawal-queue",
+      "relation": "DEPENDS_ON",
+      "to": "sts-contributor-terms"
+    },
+    {
+      "from": "sts-withdrawal-queue",
+      "relation": "DEPENDS_ON",
+      "to": "sts-reserve-simulator"
+    },
+    {
+      "from": "sts-security-review",
+      "relation": "DEPENDS_ON",
+      "to": "sts-reserve-controller"
+    },
+    {
+      "from": "sts-security-review",
+      "relation": "DEPENDS_ON",
+      "to": "sts-order-orchestration"
+    },
+    {
+      "from": "sts-security-review",
+      "relation": "DEPENDS_ON",
+      "to": "sts-fee-accounting"
+    },
+    {
+      "from": "sts-security-review",
+      "relation": "DEPENDS_ON",
+      "to": "sts-withdrawal-queue"
+    },
+    {
+      "from": "sts-operator-pilot",
+      "relation": "DEPENDS_ON",
+      "to": "sts-wallet-rehearsal"
+    },
+    {
+      "from": "sts-operator-pilot",
+      "relation": "DEPENDS_ON",
+      "to": "sts-order-orchestration"
+    },
+    {
+      "from": "sts-operator-pilot",
+      "relation": "DEPENDS_ON",
+      "to": "sts-settlement-ledger"
+    },
+    {
+      "from": "sts-operator-pilot",
+      "relation": "DEPENDS_ON",
+      "to": "sts-security-review"
+    },
+    {
+      "from": "sts-live-launch-decision",
+      "relation": "DEPENDS_ON",
+      "to": "sts-operator-pilot"
+    },
+    {
+      "from": "sts-live-launch-decision",
+      "relation": "DEPENDS_ON",
+      "to": "sts-contributor-terms"
+    },
+    {
+      "from": "sts-live-launch-decision",
+      "relation": "DEPENDS_ON",
+      "to": "sts-profit-governance"
+    },
+    {
+      "from": "sts-live-launch-decision",
+      "relation": "DEPENDS_ON",
+      "to": "sts-security-review"
+    }
+  ]
+}

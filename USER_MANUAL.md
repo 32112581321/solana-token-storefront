@@ -17,6 +17,7 @@ This manual covers the current devnet prototype. You can browse the demonstratio
 - [Hosting your fork](#hosting-your-fork)
 - [Troubleshooting](#troubleshooting)
 - [Maintainer checks](#maintainer-checks)
+- [Maintain the public roadmap](#maintain-the-public-roadmap)
 
 ## Try the demonstration
 
@@ -58,15 +59,15 @@ You need Node.js 22.12 or newer, npm, and a browser. Git is optional if you down
 
 ### Download a release
 
-Open [v1.0.0-devnet.2 on GitHub Releases](https://github.com/32112581321/solana-token-storefront/releases/tag/v1.0.0-devnet.2). The downloads are publicly hosted on GitHub.
+Open [v1.0.0-devnet.3 on GitHub Releases](https://github.com/32112581321/solana-token-storefront/releases/tag/v1.0.0-devnet.3). The downloads are publicly hosted on GitHub.
 
 | Download | Use it for |
 | --- | --- |
-| `solana-token-storefront-v1.0.0-devnet.2-source.zip` | The full editable project, including the storefront, local inventory service, scripts, tests, manual, and proposal |
-| `solana-token-storefront-v1.0.0-devnet.2-static.zip` | An already built storefront for a static web server; includes documentation under `docs/`, but does not run the inventory service |
+| `solana-token-storefront-v1.0.0-devnet.3-source.zip` | The full editable project, including the storefront, local inventory service, scripts, tests, manual, and proposal |
+| `solana-token-storefront-v1.0.0-devnet.3-static.zip` | An already built storefront for a static web server; includes documentation under `docs/`, but does not run the inventory service |
 | `SHA256SUMS.txt` | Checking that your downloaded ZIPs match the released bytes |
 
-For the source bundle, extract the ZIP and open a terminal inside `solana-token-storefront-v1.0.0-devnet.2`. Run:
+For the source bundle, extract the ZIP and open a terminal inside `solana-token-storefront-v1.0.0-devnet.3`. Run:
 
 ```sh
 npm ci
@@ -76,7 +77,7 @@ npm run dev
 
 Follow the rest of this manual to configure your own wallet or start inventory. No local database, signing keys, or installed dependencies are distributed. The ZIP is a source project, not a desktop installer.
 
-For the static bundle, extract it and serve the contents of its `solana-token-storefront-v1.0.0-devnet.2-static` folder. If Python 3 is installed, a local preview from inside that folder is:
+For the static bundle, extract it and serve the contents of its `solana-token-storefront-v1.0.0-devnet.3-static` folder. If Python 3 is installed, a local preview from inside that folder is:
 
 ```sh
 python3 -m http.server --bind 127.0.0.1 8080
@@ -379,10 +380,23 @@ For a bug report, include Node version, browser/wallet version, static or servic
 
 ## Maintainer checks
 
+### Maintain the public roadmap
+
+Open `/roadmap.html` on your local Vite URL, or the [published roadmap](https://32112581321.github.io/solana-token-storefront/roadmap.html). Delivery filters and search operate entirely in the browser. No wallet, server-side tracker, or Devgraph account is needed. Download links expose only the public graph and unsigned create requests.
+
+The authored source is `public/roadmap/graph.json`. After editing it, run `npm run roadmap:export`, then `npm run validate-roadmap`. Commit both the graph and generated `public/roadmap/create-requests.json`. The [contract/import guide](docs/ROADMAP.md) explains stable IDs, canonical Work/Arena relationships, separate delivery annotations, evidence, and optional authorized import. Do not upload private credentials, customer details, or live host receipts. Work lifecycle remains draft in this planning profile; implemented code is not proposal acceptance.
+
+The [settlement-vault proposal](docs/SETTLEMENT_VAULT_PROPOSAL.md) is documentation of possible future work, not a mode you can enable. It covers merchant access, settlement rails, reserve controls, contributor incentives, losses/exits and approval gates. There is no vault deposit command or live merchant-purchase bridge. The public site and this release do not request real funds.
+
+The production build includes `roadmap.html` and both JSON files automatically. Publish the entire `dist/` directory so their relative paths continue to work under a repository subpath. Forks still choose their own hosting. Updating the JSON alone does not mutate any private Devgraph records.
+
+### Verification sequence
+
 After implementation changes, the complete check sequence is:
 
 ```sh
 npm run validate-config
+npm run validate-roadmap
 npm run typecheck
 npm run inventory:typecheck
 npm test

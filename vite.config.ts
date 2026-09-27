@@ -13,6 +13,7 @@ export default defineConfig({
       input: {
         storefront: resolve(rootDirectory, 'index.html'),
         caseStudy: resolve(rootDirectory, 'case-study.html'),
+        roadmap: resolve(rootDirectory, 'roadmap.html'),
       },
     },
   },

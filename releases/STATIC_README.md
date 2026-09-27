@@ -14,6 +14,8 @@ Edit `storefront.config.json` for your public store and payment settings, `catal
 
 For the editable TypeScript project and the local Node/SQLite inventory service, download the **source ZIP** from the same GitHub release. It requires Node.js 22.12+ and `npm ci`. The source project uses a `public/` directory for the JSON files and images; this prebuilt ZIP places those files at the top level.
 
-The `docs/` folder contains the user manual, community proposal, release notes, and licensing notices. Those documents describe the full source project; links to source-only files may require opening the [repository](https://github.com/32112581321/solana-token-storefront). Dependency license texts are included in `docs/licenses/`.
+Open `/roadmap.html` for the public roadmap. It reads `roadmap/graph.json`; the adjacent `create-requests.json` contains unsigned Devgraph create envelopes, not an automatic import. Use the source project to edit and validate these files together. The page needs no private tracker or wallet connection.
+
+The `docs/` folder contains the user manual, community proposal, settlement-vault proposal, roadmap/import guide, release notes, and licensing notices. Those documents describe the full source project; repository-relative links and links to source-only files may require opening the [repository](https://github.com/32112581321/solana-token-storefront) or source ZIP. Dependency license texts are included in `docs/licenses/`.
 
 The storefront does not create real merchandise orders or perform fulfillment. Community voting, profit splits, buybacks, and burns are proposals rather than implemented payment behavior. See `docs/RELEASE_NOTES.md` for the limits of this preview.

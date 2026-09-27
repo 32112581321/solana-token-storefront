@@ -52,6 +52,7 @@ root.innerHTML = `
       <a href="#model">Model</a>
       <a href="#playbook">Playbook</a>
       <a href="#guardrails">Guardrails</a>
+      <a href="./roadmap.html">Roadmap</a>
       <a class="nav-cta" href="./">View storefront</a>
     </nav>
   </header>
@@ -235,7 +236,7 @@ root.innerHTML = `
 
   <footer class="study-footer">
     <div><span class="study-brand-mark" aria-hidden="true">DRU</span><p>Community Commerce Lab<br><small>Open-source scenario · September 2026</small></p></div>
-    <nav aria-label="Footer navigation"><a href="./">Storefront</a><a href="#model">Model</a><a href="#guardrails">Disclosures</a></nav>
+    <nav aria-label="Footer navigation"><a href="./">Storefront</a><a href="./roadmap.html">Roadmap</a><a href="#model">Model</a><a href="#guardrails">Disclosures</a></nav>
   </footer>
 `;
 

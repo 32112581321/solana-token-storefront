@@ -1,0 +1,386 @@
+[
+  {
+    "schema": "devgraph.arena-request.v1",
+    "operation": "create",
+    "kind": "Arena",
+    "id": "sts-commerce-arena",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-commerce-arena",
+      "title": "Solana Token Storefront",
+      "description": "Continuing stewardship of the forkable devnet storefront and review of responsible community commerce proposals. Repository-defined Arena; not provisioned in a private Devgraph host."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Proposal",
+    "id": "sts-settlement-proposal",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-settlement-proposal",
+      "title": "Community-funded settlement: proposal for review",
+      "description": "Explore token-native merchandise, a USDC reserve, earned contributor incentives, and a creator-approved community profit budget. No fundraising or launch approval is implied.\n\nAcceptance criteria:\n- Creator, merchant, contributors and reviewers explicitly agree scope before any capital collection.\n\nRepository evidence: docs/SETTLEMENT_VAULT_PROPOSAL.md, COMMUNITY_PROPOSAL.md.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Initiative",
+    "id": "sts-commerce-initiative",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-commerce-initiative",
+      "title": "Community token commerce",
+      "description": "An independent contribution: a useful checkout today and a reviewable path toward authorized merchant settlement.\n\nAcceptance criteria:\n- Prove usable commerce and reconcile obligations without promises of token appreciation.\n\nRepository evidence: README.md.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Project",
+    "id": "sts-foundation-project",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-foundation-project",
+      "title": "Devnet foundation",
+      "description": "Keep the demo forkable and close the gap between automated wallet tests and real extension approvals.\n\nAcceptance criteria:\n- Complete the child acceptance checks; retain explicit safety gates.\n\nRepository evidence: None yet.\nDelivery annotation: next (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Issue",
+    "id": "sts-foundation-issue",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-foundation-issue",
+      "title": "Devnet foundation acceptance",
+      "description": "Keep the demo forkable and close the gap between automated wallet tests and real extension approvals.\n\nAcceptance criteria:\n- Review child evidence before claiming this delivery scope complete.\n\nRepository evidence: None yet.\nDelivery annotation: next (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Project",
+    "id": "sts-merchant-project",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-merchant-project",
+      "title": "Authorized merchant connector",
+      "description": "Real products, real obligations, explicit permission. Staging orders before any production fulfillment.\n\nAcceptance criteria:\n- Complete the child acceptance checks; retain explicit safety gates.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Issue",
+    "id": "sts-merchant-issue",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-merchant-issue",
+      "title": "Authorized merchant connector acceptance",
+      "description": "Real products, real obligations, explicit permission. Staging orders before any production fulfillment.\n\nAcceptance criteria:\n- Review child evidence before claiming this delivery scope complete.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Project",
+    "id": "sts-reserve-project",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-reserve-project",
+      "title": "Settlement reserve research",
+      "description": "Compare reserve and conversion policies with mock assets before building a money-handling system.\n\nAcceptance criteria:\n- Complete the child acceptance checks; retain explicit safety gates.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Issue",
+    "id": "sts-reserve-issue",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-reserve-issue",
+      "title": "Settlement reserve research acceptance",
+      "description": "Compare reserve and conversion policies with mock assets before building a money-handling system.\n\nAcceptance criteria:\n- Review child evidence before claiming this delivery scope complete.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Project",
+    "id": "sts-contributors-project",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-contributors-project",
+      "title": "Contributor terms and controls",
+      "description": "Earned fees, honest valuation, bounded losses, and fair exits. No deposits are accepted.\n\nAcceptance criteria:\n- Complete the child acceptance checks; retain explicit safety gates.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Issue",
+    "id": "sts-contributors-issue",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-contributors-issue",
+      "title": "Contributor terms and controls acceptance",
+      "description": "Earned fees, honest valuation, bounded losses, and fair exits. No deposits are accepted.\n\nAcceptance criteria:\n- Review child evidence before claiming this delivery scope complete.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Project",
+    "id": "sts-pilot-project",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-pilot-project",
+      "title": "Capped pilot and governance",
+      "description": "Operator-funded rehearsal first. Public capital and community treasury actions require separate approval.\n\nAcceptance criteria:\n- Complete the child acceptance checks; retain explicit safety gates.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Issue",
+    "id": "sts-pilot-issue",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-pilot-issue",
+      "title": "Capped pilot and governance acceptance",
+      "description": "Operator-funded rehearsal first. Public capital and community treasury actions require separate approval.\n\nAcceptance criteria:\n- Review child evidence before claiming this delivery scope complete.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-storefront",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-storefront",
+      "title": "Forkable storefront and exact-token cart",
+      "description": "Eight active reference products, local artwork, variants, persistent cart, exact amounts and devnet-only payment configuration.\n\nAcceptance criteria:\n- Cart and amount tests pass; mainnet reference mint remains blocked.\n\nRepository evidence: src/main.ts, tests/cart.test.ts, tests/amount.test.ts, tests/validation.test.ts.\nDelivery annotation: implemented (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-wallet-code",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-wallet-code",
+      "title": "Phantom and MetaMask integration",
+      "description": "Desktop wallet connection and devnet transaction construction are implemented. Automated mocks and a developer-signed chain test are not installed-extension acceptance.\n\nAcceptance criteria:\n- Validate network, mint, amount, simulation and signed transaction; show submission rather than a paid-order claim.\n\nRepository evidence: e2e/wallets.spec.ts, tests/transaction.test.ts, tests/devnet-wallet-live.test.ts.\nDelivery annotation: implemented (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-inventory",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-inventory",
+      "title": "Local inventory and reconciliation",
+      "description": "Optional localhost stock, reservations, order snapshots and manual devnet reconciliation. No public production service or real fulfillment.\n\nAcceptance criteria:\n- Exercise stock reservation, expiry and reconciliation with isolated local tests.\n\nRepository evidence: server/database.test.ts, server/cli.ts, USER_MANUAL.md.\nDelivery annotation: implemented (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-wallet-rehearsal",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-wallet-rehearsal",
+      "title": "Rehearse both real wallet extensions",
+      "description": "Test installed Phantom and MetaMask desktop extensions with disposable devnet accounts; record versions and sanitized receipts.\n\nAcceptance criteria:\n- Approve, reject, disconnect and retry safely in each extension; exercise wrong-network and insufficient-funds cases.\n- No private keys or customer data in public evidence.\n\nRepository evidence: None yet.\nDelivery annotation: next (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-merchant-consent",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-merchant-consent",
+      "title": "Agree the merchant relationship",
+      "description": "Confirm rights, merchant of record, store-operator API authority, settlement asset and refund/support responsibilities. No consent is inferred from a public catalog.\n\nAcceptance criteria:\n- Written rights and operating agreement; staging access authorized.\n- Confirm whether USDC is accepted or an approved fiat rail is required.\n\nRepository evidence: None yet.\nDelivery annotation: gated (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-product-mapping",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-product-mapping",
+      "title": "Map SKUs to merchant products",
+      "description": "Create an authorized staging adapter with product/variation mappings and authoritative stock, shipping, tax and landed cost.\n\nAcceptance criteria:\n- All active variant mappings verified; missing or stale products fail closed.\n- No production orders or customer information in test fixtures.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-order-orchestration",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-order-orchestration",
+      "title": "Verify payment before merchant fulfillment",
+      "description": "Correlate quote, hold, reference, payment and merchant order; verify finality, prevent replay and make payout/order retries idempotent.\n\nAcceptance criteria:\n- Test duplicate, partial, late and unknown payments without duplicate payouts or shipments.\n- Only verified agreed-rail payment can advance a staging merchant order; setting paid does not itself transfer money.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-refunds-privacy",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-refunds-privacy",
+      "title": "Secure refunds and customer data",
+      "description": "Define refund currency and costs; protect shipping data and credentials in a private authenticated service.\n\nAcceptance criteria:\n- Test cancellations, expired holds, refund failures and merchant outages.\n- Document consent, access, retention and deletion; never put personal data on chain.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-reserve-simulator",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-reserve-simulator",
+      "title": "Simulate reserve and conversion policies",
+      "description": "Compare per-order swaps, periodic batching and threshold replenishment with mock prices, liquidity and demand. No live fund collection.\n\nAcceptance criteria:\n- Stress price collapse, missing routes, USDC impairment, refund spikes and simultaneous withdrawals.\n- Report minimum liquidity, unmet obligations, swap costs, DRU sold and capital-time; do not optimize swap count alone.\n\nRepository evidence: None yet.\nDelivery annotation: next (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-reserve-controller",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-reserve-controller",
+      "title": "Build a bounded devnet reserve controller",
+      "description": "Protect committed payouts and buffers; cap DRU exposure and holding duration; use executable quotes, hysteresis and atomic admission checks.\n\nAcceptance criteria:\n- Concurrent quotes cannot double-commit USDC; unavailable liquidity pauses new obligations.\n- No DRU holdings or in-flight funds treated as spendable USDC; integer accounting throughout.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-settlement-ledger",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-settlement-ledger",
+      "title": "Reconcile reserve, chain and merchant ledgers",
+      "description": "Separate settled assets, in-flight payouts, customer liabilities, capital, earnings and community budgets.\n\nAcceptance criteria:\n- Idempotent reconciliation survives restart, reorg/finality delays and provider timeouts.\n- Deposits are never revenue; losses are recorded before distributions.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-cross-chain",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-cross-chain",
+      "title": "Optional cross-chain settlement decision",
+      "description": "Use same-chain USDC first. Evaluate CCTP only if an approved merchant rail needs another chain; it is not a fiat off-ramp.\n\nAcceptance criteria:\n- Document a real cross-chain requirement before implementation.\n- Test burn/attestation/mint recovery and no double counting; otherwise leave this branch deferred.\n\nRepository evidence: None yet.\nDelivery annotation: gated (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-contributor-terms",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-contributor-terms",
+      "title": "Define capital rights and earned incentives",
+      "description": "Agree a fee or creator-margin source, eligibility, conservative valuation, loss waterfall, funded first-loss capacity, caps and fair withdrawal terms.\n\nAcceptance criteria:\n- Qualified review of custody, contributor rights, jurisdiction, disclosures and tax obligations.\n- No promised APY, guaranteed principal, new-deposit-funded rewards or implied token-holder redemption rights.\n\nRepository evidence: None yet.\nDelivery annotation: gated (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-fee-accounting",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-fee-accounting",
+      "title": "Prototype fee and capital-time accounting",
+      "description": "Allocate only realized distributable net fees after losses, obligations and required reserves; keep community profit separate.\n\nAcceptance criteria:\n- Zero safely distributable fees means zero rewards; rounding and boundary deposits tested.\n- Settlement fees deducted once before the campaign community-profit calculation.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-withdrawal-queue",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-withdrawal-queue",
+      "title": "Test fair exits and impairment handling",
+      "description": "Simulate queued exits, notice periods, liquidity constraints and net-asset write-downs without offloading losses to remaining contributors.\n\nAcceptance criteria:\n- Run a mass-exit scenario alongside merchant/refund obligations.\n- Define share pricing, queue order, emergency gates and buffer exhaustion behavior.\n\nRepository evidence: None yet.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-security-review",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-security-review",
+      "title": "Review custody and production controls",
+      "description": "Threat-model signer authority, quote manipulation, mint controls, upgrades and outages; remediate findings and obtain independent review.\n\nAcceptance criteria:\n- Document multisig/timelocks and funded loss-buffer ownership if chosen.\n- Authentication, rate limits, monitoring, backups, emergency pause and recovery tested; no claim that CI is an audit.\n\nRepository evidence: None yet.\nDelivery annotation: gated (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-operator-pilot",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-operator-pilot",
+      "title": "Run a capped operator-funded staging rehearsal",
+      "description": "After prerequisite evidence, exercise merchant staging orders and mock devnet settlement with no community funds or real shipments.\n\nAcceptance criteria:\n- Predeclare caps, stop conditions, operators and escalation; reconcile all test obligations and exceptions.\n- Publish sanitized results and remaining limitations before proposing any live pilot.\n\nRepository evidence: None yet.\nDelivery annotation: gated (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-profit-governance",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-profit-governance",
+      "title": "Agree community profit governance",
+      "description": "Ask the creator to approve a percentage of positive distributable profit; define eligibility, quorum, conflicts, signers and execution evidence.\n\nAcceptance criteria:\n- Never spend customer obligations or contributor principal on a vote or burn.\n- Distinguish direct burns from buybacks and publish actual receipts, not promised price effects.\n\nRepository evidence: COMMUNITY_PROPOSAL.md.\nDelivery annotation: planned (not a Devgraph status or approval)."
+    }
+  },
+  {
+    "schema": "devgraph.work-request.v1",
+    "operation": "create",
+    "kind": "Task",
+    "id": "sts-live-launch-decision",
+    "expected_version": null,
+    "payload": {
+      "id": "sts-live-launch-decision",
+      "title": "Separate approval for real funds and orders",
+      "description": "A mainnet implementation and capped real campaign require new authorization after legal, security, merchant and operational gates. Community deposits are a later, separate decision.\n\nAcceptance criteria:\n- Explicit launch decision names accountable people, limits, customer terms and evidence.\n- No deposit button, mainnet vault or public fundraising until all applicable gates are met.\n\nRepository evidence: None yet.\nDelivery annotation: gated (not a Devgraph status or approval)."
+    }
+  }
+]

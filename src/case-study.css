@@ -26,7 +26,7 @@ h1, h2, h3, p { text-wrap: balance; }
 .study-header { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: 0 4vw; position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--cs-line); background: color-mix(in srgb, var(--cs-paper) 93%, transparent); backdrop-filter: blur(18px); }
 .study-brand { display: flex; align-items: center; gap: .8rem; text-decoration: none; text-transform: uppercase; letter-spacing: .09em; font-size: .76rem; font-weight: 850; }
 .study-brand-mark { width: 45px; aspect-ratio: 1; display: grid; place-items: center; border: 2px solid var(--cs-red); border-radius: 50%; color: var(--cs-red); font: 800 .64rem var(--cs-display); }
-.study-header nav, .study-footer nav { display: flex; align-items: center; gap: 1.4rem; }
+.study-header nav, .study-footer nav { display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap; }
 .study-header nav a, .study-footer nav a { text-decoration: none; font-size: .82rem; }
 .study-header nav a:hover, .study-footer nav a:hover { text-decoration: underline; text-underline-offset: .25rem; }
 .study-header .nav-cta { padding: .62rem .8rem; border: 1px solid var(--cs-ink); background: var(--cs-ink); color: white; }

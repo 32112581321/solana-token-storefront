@@ -4,6 +4,8 @@
 
 [Read the README](README.md) · [Try the demo](https://32112581321.github.io/solana-token-storefront/) · [Run it yourself](USER_MANUAL.md)
 
+[Settlement vault design](docs/SETTLEMENT_VAULT_PROPOSAL.md) · [Public roadmap](https://32112581321.github.io/solana-token-storefront/roadmap.html) · [Repo graph & maintenance](docs/ROADMAP.md)
+
 ## The contribution
 
 I built a forkable Solana merchandise storefront and am offering the code as a community contribution. My proposal is to test a simple idea together: make good merchandise available for the community token, then let token holders help choose how a creator-approved share of the resulting profit is used.
@@ -83,6 +85,16 @@ If a burn is selected, evidence should identify the mint, raw quantity, transact
 A proposed community treasury could use a separately labeled wallet with multiple signers and publish execution receipts. That arrangement must be created and agreed separately. Under the current code, all checkout tokens go directly to the configured merchant recipient. A later community allocation is a merchant commitment and transfer, not an automatic split or an escrow enforced by this application.
 
 Holding the token would not, under this proposal, grant a dividend, a redemption right, or ownership of the creator's business. The proposed participation concerns the use of an agreed community budget.
+
+## A proposed settlement reserve and contributor incentives
+
+The [expanded design](docs/SETTLEMENT_VAULT_PROPOSAL.md) documents a possible authorized merchant connector and USDC settlement reserve. Customers would pay DRU; a reserve would cover agreed merchant obligations while a bounded controller replenishes USDC through executable swap routes. This is working capital at risk, not automatic staking yield. A reserve can defer conversions, not guarantee that token selling disappears.
+
+Community capital providers would need a reason to participate: for example, a separately agreed share of realized net settlement fees or creator-approved margin. No fixed yield, principal protection, allocation rate, or contributor rights have been promised. Fee eligibility, loss valuation, any funded first-loss buffer, fair withdrawal queues, caps, custody and legal review all precede accepting deposits. Start with a simulator and operator-funded staging tests, not fundraising.
+
+Vault contribution would be distinct from merely holding the token. Any future capital-provider claim requires separately reviewed terms. Contributor rewards must not be counted again as community profit; fees allocated to capital providers are deducted once before the community share. Neither customer obligations nor contributor principal can fund buybacks or burns.
+
+The [roadmap](https://32112581321.github.io/solana-token-storefront/roadmap.html) separates existing devnet code from proposed work and explicit gates. It is stored as [JSON in this repo](public/roadmap/graph.json), not a committed schedule or evidence of creator approval. No deposits, mainnet vault, automatic swaps, or real merchant orders are implemented.
 
 ## How supporters could help market the merchandise
 

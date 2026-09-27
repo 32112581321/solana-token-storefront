@@ -143,6 +143,7 @@ function renderShell(config: StorefrontConfig, catalog: Catalog, inventory: Map<
         <a href="#catalog">Catalog</a>
         <a href="#checkout">Checkout</a>
         <a href="./case-study.html">Case study</a>
+        <a href="./roadmap.html">Roadmap</a>
         <button class="cart-button" type="button" data-open-cart aria-label="Open cart">Cart <span data-cart-count>0</span></button>
       </nav>
     </header>
@@ -200,7 +201,7 @@ function renderShell(config: StorefrontConfig, catalog: Catalog, inventory: Map<
     </main>
     <footer>
       <p>${escapeHtml(config.storefront.disclaimer)}</p>
-      <span><a href="./case-study.html">Hypothetical campaign case study</a> · Forkable storefront</span>
+      <span><a href="./case-study.html">Hypothetical campaign case study</a> · <a href="./roadmap.html">Public roadmap</a> · Forkable storefront</span>
     </footer>
     <div class="drawer-backdrop" data-drawer-backdrop hidden></div>
     <aside class="cart-drawer" data-cart-drawer aria-labelledby="cart-title" aria-hidden="true">
