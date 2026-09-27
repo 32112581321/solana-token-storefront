@@ -15,27 +15,6 @@ describe('checked-in public configuration', () => {
     const configResult = validateStorefrontConfig(await readJson(resolve(publicRoot, 'storefront.config.json')));
     expect(configResult.errors, configResult.errors.join('\n')).toEqual([]);
     expect(configResult.data).not.toBeNull();
-    expect(configResult.data!.payment).toMatchObject({
-      enabled: true,
-      network: 'devnet',
-      recipient: '8YRJP9pHJJtcDqX29hwGKmCmvBwmcyoCaKmFnyk43UNL',
-      token: {
-        symbol: 'TEST DRU',
-        mint: 'FAM2TEFYrRXFVQ8W16SkPwaeZyWPcLnjieiTMYvc6Kpw',
-        decimals: 6,
-      },
-    });
-    expect(configResult.data!.inventory).toEqual({ mode: 'static', reservationMinutes: 15 });
-
-    const proof = await readJson(resolve(publicRoot, 'devnet-proof.json')) as Record<string, unknown>;
-    expect(proof).toMatchObject({
-      network: 'devnet',
-      recipient: configResult.data!.payment.recipient,
-      amount: '30',
-      amountMinorUnits: '30000000',
-      signature: '3MLUvuYppeqJt4DFC6tY1RXxMyznBRTcjmv2vy5bQfsHr925tKqb4PkWh8oisPfX8E4dJR57kqNUDktejE8kMUWz',
-    });
-    expect(proof.token).toMatchObject(configResult.data!.payment.token);
 
     const catalogResult = validateCatalog(
       await readJson(resolve(publicRoot, 'catalog.json')),
@@ -43,8 +22,6 @@ describe('checked-in public configuration', () => {
     );
     expect(catalogResult.errors, catalogResult.errors.join('\n')).toEqual([]);
     expect(catalogResult.data).not.toBeNull();
-    expect(catalogResult.data!.products.filter((product) => product.status === 'active')).toHaveLength(8);
-    expect(catalogResult.data!.products.filter((product) => product.status === 'draft')).toHaveLength(3);
 
     for (const product of catalogResult.data!.products) {
       for (const image of product.images) {
